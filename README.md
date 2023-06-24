@@ -1,7 +1,6 @@
 # TODO
 - script de déploiement
 - Solidity : natspec + ddos gas limit + optimisation + TU
-- Front : design
 - Front : l’enregistrement d’une liste blanche d'électeurs. 
 - Front : à l'administrateur de commencer la session d'enregistrement de la proposition.
 - Front : aux électeurs inscrits d’enregistrer leurs propositions.
@@ -11,5 +10,7 @@
 - Front : à l'administrateur de mettre fin à la session de vote.
 - Front : à l'administrateur de comptabiliser les votes.
 - Front : à tout le monde de consulter le résultat.
+- Front : gérer les états (bouton visible ou non)
+- Front : écouter les events pour le workflow status / voters pour l'owner / lister les proposals dispo / nb Voters + nb Proposals + nb votes
 - vidéo
 - déploiement prod (Vercel)
