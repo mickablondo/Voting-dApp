@@ -26,6 +26,8 @@
 truffle unbox react
 cd client
 npm i bootstrap@5.3.0
+cd truffle
+npm i @openzeppelin/contracts
 ```
 
 Pour tester :  
@@ -35,4 +37,10 @@ cd truffle
 truffle migrate
 cd ../client
 npm start
+```
+
+Pour aller plus loin, un script est disponible pour vérifier que l'interaction avec le Smart Contract est possible :  
+```bash
+truffle migrate
+truffle exec scripts/get_voting_status.js
 ```
