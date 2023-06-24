@@ -1,7 +1,7 @@
 {
-  "name": "truffle-project",
+  "name": "voting-dapp",
   "version": "0.1.0",
-  "description": "Truffle project with SimpleStorage contract",
+  "description": "Truffle project with Voting contract",
   "scripts": {
     "test": "truffle test"
   },

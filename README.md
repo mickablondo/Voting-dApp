@@ -1,4 +1,6 @@
-# TODO
+<i>Ce fichier README est en mode brouillon.</i>
+
+## TODO
 - script de déploiement
 - Solidity : natspec + ddos gas limit + optimisation + TU
 - Front : l’enregistrement d’une liste blanche d'électeurs. 
@@ -14,3 +16,23 @@
 - Front : écouter les events pour le workflow status / voters pour l'owner / lister les proposals dispo / nb Voters + nb Proposals + nb votes
 - vidéo
 - déploiement prod (Vercel)
+
+## Conception
+[Balsamiq](https://balsamiq.com/)
+![Alt text](conception.png)
+
+## Commandes passées
+```bash
+truffle unbox react
+cd client
+npm i bootstrap@5.3.0
+```
+
+Pour tester :  
+```bash
+ganache -m '...'
+cd truffle
+truffle migrate
+cd ../client
+npm start
+```
