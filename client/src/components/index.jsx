@@ -18,6 +18,18 @@ const Index = () => {
               if(owner === accounts[0]) {
                   console.log('i am the owner !')
               }
+
+              // recherche des voters dans les évènements
+              let options = {filter: {value: [],},fromBlock: 0};
+              await contract.events.VoterRegistered(options)
+                  .on('data', event => {
+                    if(event.returnValues.voterAddress === accounts[0]) {
+                      console.log('i am a voter !')
+                    }
+                  })
+                  .on('changed', changed => console.log(changed))
+                  .on('error', err => console.log(err))
+                  .on('connected', str => console.log(str));
           }
       })();
   }, [contract]);
