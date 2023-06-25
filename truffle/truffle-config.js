@@ -7,22 +7,34 @@ module.exports = {
 
   contracts_build_directory: "../client/src/contracts",
   networks: {
-    development: {
-     host: "127.0.0.1",     // Localhost (default: none)
-     port: 8545,            // Standard Ethereum port (default: none)
-     network_id: "*",       // Any network (default: none)
-    }
+
+    // reserved by the standalone test command
+    // development: { },
+
+    // used for local development
+    local: {
+      host: "127.0.0.1",
+      port: 8545,
+      network_id: "*",
+     },
+
   },
 
   mocha: {
 
   },
 
-  // Configure your compilers
   compilers: {
     solc: {
-      version: "0.8.20"
-    }
-  }
+      version: "0.8.20",
+      settings: {
+        optimizer: {
+          enabled: false,
+          runs: 200
+        }
+      }
+    },
+  },
+
 };
   
