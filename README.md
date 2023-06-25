@@ -25,7 +25,7 @@
 ```bash
 truffle unbox react
 cd client
-npm i bootstrap@5.3.0
+npm i bootstrap@5.3.0 reactstrap
 cd truffle
 npm i @openzeppelin/contracts
 ```
