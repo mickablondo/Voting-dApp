@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "description": "Truffle project with Voting contract",
   "scripts": {
-    "test": "truffle test"
+    "test": "npx truffle test",
+    "migrate:local": "npx truffle migrate --network local"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.9.2",
     "@truffle/hdwallet-provider": "^2.1.7"
+  },
+  "devDependencies": {
+    "@openzeppelin/test-helpers": "^0.5.16"
   }
 }

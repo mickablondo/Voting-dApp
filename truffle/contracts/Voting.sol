@@ -1,9 +1,13 @@
 // SPDX-License-Identifier: MIT
 
 pragma solidity 0.8.20;
-import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 /// @title Voting management contract
+/// @notice This contract allows users to create proposals and vote for them. 
+///         The owner should handle the voting contract status changes.
+/// @dev The proposal ids for voters should start from 1. 
+///      For the convenience a genesis proposal is created upon vote start.
 /// @author Mickaël Blondeau
 contract Voting is Ownable {
 
@@ -108,9 +112,7 @@ contract Voting is Ownable {
         require(keccak256(abi.encode(_desc)) != keccak256(abi.encode("")), 'Vous ne pouvez pas ne rien proposer'); // facultatif
         // voir que desc est different des autres
 
-        Proposal memory proposal;
-        proposal.description = _desc;
-        proposalsArray.push(proposal);
+        proposalsArray.push(Proposal(_desc, 0));
         emit ProposalRegistered(proposalsArray.length-1);
     }
 
@@ -119,16 +121,18 @@ contract Voting is Ownable {
     /// @notice Set a vote
     /// @dev use the modifier onlyVoters and calculate the winner gradually (fix : ddos gas limit attack)
     /// @param _id the id of the proposal
-    function setVote( uint _id) external onlyVoters {
+    function setVote(uint _id) external onlyVoters {
         require(workflowStatus == WorkflowStatus.VotingSessionStarted, 'Voting session havent started yet');
         require(voters[msg.sender].hasVoted != true, 'You have already voted');
         require(_id < proposalsArray.length, 'Proposal not found'); // pas obligé, et pas besoin du >0 car uint
 
-        voters[msg.sender].votedProposalId = _id;
-        voters[msg.sender].hasVoted = true;
-        proposalsArray[_id].voteCount++;
+        Voter storage voter = voters[msg.sender];
+        voter.votedProposalId = _id;
+        voter.hasVoted = true;
+        Proposal storage proposal = proposalsArray[_id];
+        ++proposal.voteCount;
 
-        if (proposalsArray[_id].voteCount > proposalsArray[winningProposalID].voteCount) {
+        if (proposal.voteCount > proposalsArray[winningProposalID].voteCount) {
             winningProposalID = _id;
         }
 
@@ -138,14 +142,12 @@ contract Voting is Ownable {
     // ::::::::::::: STATE ::::::::::::: //
 
     /// @notice Workflow changed : start the registering of the proposals
-    /// @dev use the modifier onlyOwner
+    /// @dev use the modifier onlyOwner. A "genesis" proposal is created there. 
     function startProposalsRegistering() external onlyOwner {
         require(workflowStatus == WorkflowStatus.RegisteringVoters, 'Registering proposals cant be started now');
         workflowStatus = WorkflowStatus.ProposalsRegistrationStarted;
         
-        Proposal memory proposal;
-        proposal.description = "GENESIS";
-        proposalsArray.push(proposal);
+        proposalsArray.push(Proposal("GENESIS", 0));
         
         emit WorkflowStatusChange(WorkflowStatus.RegisteringVoters, WorkflowStatus.ProposalsRegistrationStarted);
     }
