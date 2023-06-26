@@ -39,10 +39,13 @@ cd ../client
 npm start
 ```
 
-Pour aller plus loin, un script est disponible pour vérifier que l'interaction avec le Smart Contract est possible :  
+Pour aller plus loin, deux scripts sont disponibles pour :  
+ - récupérer le statut en cours ;
+ - enregistrer des <i>voters</i> par défaut pour faciliter les tests en local ;
 ```bash
 truffle migrate
 truffle exec scripts/get_voting_status.js
+truffle exec scripts/register_voters.js
 ```
 
 ## Backend
