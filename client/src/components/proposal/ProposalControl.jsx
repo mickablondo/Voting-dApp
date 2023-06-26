@@ -9,7 +9,7 @@ const AddProposal = () => {
   // - re-vérif du type d'utilisateur ? (isVoter)
 
   const [proposalInputState, setProposalInputState] = useState("");
-  const { state: {  contract } } = useEth();
+  const { state: {  contract, accounts } } = useEth();
   
   const onProposalInputChange = (value) => {
     setProposalInputState(value);
@@ -18,7 +18,7 @@ const AddProposal = () => {
   const onAddProposalSubmit = (e) => {
     e.preventDefault(); 
     try {
-      // TODO
+      contract.methods.addProposal(proposalInputState).send({from: accounts[0]});
     } catch (err) {
       console.error(err);
     }
@@ -29,6 +29,7 @@ const AddProposal = () => {
       <Row className="row-cols-lg-auto g-1">
         <Col className="me-auto ">
           <Input name="proposalText" placeholder="my proposal is ..." id="addProposal" type="textarea" 
+            rows="4"
             value={proposalInputState}
             onChange={e => onProposalInputChange(e.target.value)}
           />
