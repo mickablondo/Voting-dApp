@@ -9,8 +9,8 @@ import NoticeWrongNetwork from "./notices/NoticeWrongNetwork";
 import ChangeStatus from "./change_status";
 import AddVoter from "./voter/add_voter";
 import ListVoters from "./voter/list_voters";
-import AddProposal from "./proposal/add_proposal";
-import ListProposal from "./proposal/list_proposal";
+import AddProposal from "./proposal/ProposalControl";
+import ListProposal from "./proposal/ProposalList";
 
 const Index = () => {
 
