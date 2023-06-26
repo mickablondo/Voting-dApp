@@ -3,7 +3,7 @@ import useEth from "../../contexts/EthContext/useEth";
 
 import { Form, Row, Col, Label, Input, Button } from 'reactstrap';
 
-const VoterControl = ({   }) => {
+const VoterControl = () => {
   
   const [voterInputState, setVoterInputState] = useState("");
   const { state: {  contract, owner } } = useEth();
@@ -16,7 +16,7 @@ const VoterControl = ({   }) => {
     e.preventDefault(); 
 
     //TODO validate address format
-    //TODO process with web3 addVoter
+    //TODO disable field, then reenable (to manage with promise)
     //TODO manage rpc error case
     try {
       // Récupération du owner
