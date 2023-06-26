@@ -6,26 +6,37 @@ import { Form, Row, Col, Label, Input, Button } from 'reactstrap';
 const VoterControl = () => {
   
   const [voterInputState, setVoterInputState] = useState("");
+  const [isVoteRunningState, setIsVoteRunningState] = useState(false);
   const { state: {  contract, owner } } = useEth();
   
   const onVoterInputChange = (value) => {
     setVoterInputState(value);
   };
 
+  const isEthAddressFormat = (ethAddress) => { 
+    return (/^0x[0-9a-fA-F]{40}$/.test(ethAddress));
+  };
+
   const onAddVoterSubmit = (e) => {
     // prevent default submit form action
     e.preventDefault(); 
 
-    //TODO validate address format
-    //TODO disable field, then reenable (to manage with promise)
-    //TODO manage rpc error case
-    try {
-      // Récupération du owner
-      contract.methods.addVoter(voterInputState).send({from: owner});
-
-    } catch (err) {
-      console.error(err);
+    if (!isEthAddressFormat(voterInputState)) {
+      alert(`Not an ethereum address:"${voterInputState}"`);
+      return;
     }
+    setIsVoteRunningState(true);
+
+    contract.methods.addVoter(voterInputState).send({from: owner})
+    // .then((receipt) => {
+    //   console.log ("receipt:")
+    //   console.log(receipt); 
+    // })
+    .catch((error) => {
+      console.log(error);
+      alert(error?.message); 
+    })
+    .finally(() => setIsVoteRunningState(false)) 
   };
 
   return ( 
@@ -36,10 +47,11 @@ const VoterControl = () => {
           <Input name="voterAddress" placeholder="0x..." id="addVoterAddress" type="text" 
             value={voterInputState}
             onChange={e => onVoterInputChange(e.target.value)}
+            disabled={isVoteRunningState}
           />
         </Col>
         <Col>
-          <Button>Add voter</Button>
+          <Button disabled={isVoteRunningState}>Add voter</Button>
         </Col>
       </Row> 
     </Form>
