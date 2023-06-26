@@ -20,6 +20,7 @@ function EthProvider({ children }) {
 
           // Récupération du owner
           owner = await contract.methods.owner().call();
+          console.log("owner is:"+ owner);
         } catch (err) {
           console.error(err);
         }

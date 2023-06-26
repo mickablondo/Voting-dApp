@@ -4,7 +4,8 @@
   "description": "Truffle project with Voting contract",
   "scripts": {
     "test": "npx truffle test",
-    "migrate:local": "npx truffle migrate --network local"
+    "migrate:local": "npx truffle migrate --network local",
+    "ganache": "ganache -m \"`cat .ganache-mnemonic`\""
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.9.2",
