@@ -13,6 +13,7 @@ const VoterControl = () => {
   };
 
   const onAddVoterSubmit = (e) => {
+    // prevent default submit form action
     e.preventDefault(); 
 
     //TODO validate address format
