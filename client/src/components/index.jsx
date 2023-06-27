@@ -74,7 +74,7 @@ const Index = () => {
   return (
     <Container>
         <Row>
-          <Head />
+          <Head isOwner={isOwnerState} isVoter={isVoterState}/>
         </Row>
         {
           !artifact ? <NoticeNoArtifact /> :
