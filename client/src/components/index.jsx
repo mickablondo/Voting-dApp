@@ -7,53 +7,64 @@ import VotingStates from "./voting_states";
 import NoticeNoArtifact from "./notices/NoticeNoArtifact";
 import NoticeWrongNetwork from "./notices/NoticeWrongNetwork";
 import ChangeStatus from "./change_status";
-import AddVoter from "./voter/add_voter";
-import ListVoters from "./voter/list_voters";
+import VoterControl from "./voter/VoterControl";
+import VoterList from "./voter/VoterList";
 import AddProposal from "./proposal/ProposalControl";
 import ListProposal from "./proposal/ProposalList";
 
 const Index = () => {
 
   const { state: { artifact, contract, accounts, owner } } = useEth();
-  const [ownerPart, setOwnerPart] = useState();
-  const [voterPart, setVoterPart] = useState();
-
+  const [isOwnerState, setIsOwnerState] = useState(false);
+  const [isVoterState, setIsVoterState] = useState(false); 
+  const [votersState, setVotersState] = useState([]);
+ 
+  const addVoter = (voterAddress) => {
+    console.log("adding a votersState: "+ voterAddress); 
+    setVotersState(votersState => [...votersState, voterAddress]);
+  };
+ 
   // Gestion des droits du compte connecté
-  useEffect(() => {
-      (async function () {
-          if (contract) {
-              if(owner === accounts[0]) {
-                  console.log('i am the owner !')
-                  setOwnerPart(<Row>
-                                <ChangeStatus />
-                                <ListVoters />
-                                <AddVoter />
-                              </Row>);
-              }
+  useEffect(() => { 
+    if (contract) {
+      if(owner === accounts[0]) {
+          console.log('i am the owner !')
+          setIsOwnerState(true); 
+      }
 
-              // recherche des voters dans les évènements
-              let options = {filter: {value: [],},fromBlock: 0};
-              contract.events.VoterRegistered(options)
-                  .on('data', event => {
-                    if(event.returnValues.voterAddress === accounts[0]) {
-                      console.log('i am a voter !')
-                      setVoterPart(<Row>
-                                    <ListProposal />
-                                    <AddProposal />
-                                  </Row>);
-                    }
-                  })
-                  .on('changed', changed => console.log(changed))
-                  .on('error', err => console.log(err))
-                  .on('connected', str => console.log(str));
-          }
-      })();
+      // recherche des voters dans les évènements
+      let options = {filter: {value: [],},fromBlock: 0};
+      contract.events.VoterRegistered(options)
+          .on('data', event => {
+            addVoter(event.returnValues.voterAddress);
+            if(event.returnValues.voterAddress === accounts[0]) { 
+              console.log('i am a voter !')
+              setIsVoterState(true);
+            }  
+          })
+          .on('changed', changed => console.log(changed))
+          .on('error', err => console.log(err))
+          .on('connected', str => console.log(str));
+    } 
   }, [contract]);
 
   const body = <Row>
   <Col>
-    {ownerPart}
-    {voterPart}
+    {isOwnerState && (
+      <Row>
+        <ChangeStatus />
+        <VoterList votersState={votersState} />
+        { isOwnerState && (
+          <VoterControl />
+        )}
+      </Row>
+    )}
+    {isVoterState && (
+      <Row> 
+        <ListProposal />
+        <AddProposal />
+      </Row>
+    )} 
   </Col>
   <Col>
     <VotingStates />
@@ -63,14 +74,14 @@ const Index = () => {
   return (
     <Container>
         <Row>
-          <Head />
+          <Head isOwner={isOwnerState} isVoter={isVoterState}/>
         </Row>
         {
           !artifact ? <NoticeNoArtifact /> :
             !contract ? <NoticeWrongNetwork /> :
               body
         }
-      </Container>
+    </Container>
   )
 }
 
