@@ -26,17 +26,19 @@ const VoterControl = () => {
       return;
     }
     setIsVoteRunningState(true);
-
-    contract.methods.addVoter(voterInputState).send({from: owner})
-    // .then((receipt) => {
-    //   console.log ("receipt:")
-    //   console.log(receipt); 
-    // })
-    .catch((error) => {
+    try {
+      contract.methods.addVoter(voterInputState).send({from: owner})
+      .catch((error) => {
+        console.log(error);
+        alert(error?.message); 
+      })
+      .finally(() => setIsVoteRunningState(false)) 
+    } catch (error) {
+      alert(`Could not addVoter:"${error}"`);
       console.log(error);
-      alert(error?.message); 
-    })
-    .finally(() => setIsVoteRunningState(false)) 
+      setIsVoteRunningState(false);
+    }
+
   };
 
   return ( 
