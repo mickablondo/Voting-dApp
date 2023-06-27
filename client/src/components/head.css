@@ -1,0 +1,12 @@
+img.navbar-icon {
+    height: 40px; 
+    width: 40px; 
+    margin-right: 12px; 
+}
+
+#navbar-right-text {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+ 
