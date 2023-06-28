@@ -3,7 +3,7 @@ import useEth from "../../contexts/EthContext/useEth";
 
 import { Form, Row, Col, Label, Input, Button } from 'reactstrap';
 
-const VoterControl = () => {
+const VoterControl = ({votersState}) => {
   
   const [voterInputState, setVoterInputState] = useState("");
   const [isVoteRunningState, setIsVoteRunningState] = useState(false);
@@ -25,6 +25,11 @@ const VoterControl = () => {
       alert(`Not an ethereum address:"${voterInputState}"`);
       return;
     }
+    if (votersState.includes(voterInputState)) {
+      alert(`Already registred voter: "${voterInputState}"`);
+      return;
+    }
+
     setIsVoteRunningState(true);
     try {
       contract.methods.addVoter(voterInputState).send({from: owner})
@@ -43,10 +48,10 @@ const VoterControl = () => {
 
   return ( 
     <Form onSubmit={onAddVoterSubmit} >
-      <Row className="row-cols-lg-auto g-1">
+      <Row className="row-cols-lg-auto">
         <Col className="me-auto ">
           <Label for="voterAddress" className="visually-hidden">Email</Label>
-          <Input name="voterAddress" placeholder="0x..." id="addVoterAddress" type="text" 
+          <Input name="voterAddress" placeholder="0x..." className="voter-address-input" type="text" 
             value={voterInputState}
             onChange={e => onVoterInputChange(e.target.value)}
             disabled={isVoteRunningState}

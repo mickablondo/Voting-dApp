@@ -3,12 +3,11 @@ import Head from "./head";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Col, Container, Row } from 'reactstrap';
 import useEth from "../contexts/EthContext/useEth";
-import VotingStates from "./voting_states";
+import VotingStates from "./votingState/VotingStatePanel";
 import NoticeNoArtifact from "./notices/NoticeNoArtifact";
 import NoticeWrongNetwork from "./notices/NoticeWrongNetwork";
 import ChangeStatus from "./change_status";
-import VoterControl from "./voter/VoterControl";
-import VoterList from "./voter/VoterList";
+import VoterContainer from "./voter/VoterContainer";
 import AddProposal from "./proposal/ProposalControl";
 import ListProposal from "./proposal/ProposalList";
 
@@ -30,8 +29,10 @@ const Index = () => {
   }
  
   const addVoter = (voterAddress) => {
-    console.log("adding a votersState: "+ voterAddress); 
-    setVotersState(votersState => [...votersState, voterAddress]);
+    if (!votersState.includes(voterAddress)) {
+      console.log("adding a votersState: "+ voterAddress);
+      setVotersState(votersState => [...votersState, voterAddress]);
+    }
   };
 
   const addProposal = async (proposalId) => {
@@ -83,10 +84,7 @@ const Index = () => {
     {isOwnerState && (
       <Row>
         <ChangeStatus />
-        <VoterList votersState={votersState} />
-        { isOwnerState && (
-          <VoterControl />
-        )}
+        <VoterContainer votersState={votersState} isOwnerState={isOwnerState}/>
       </Row>
     )}
     {isVoterState && (
@@ -97,7 +95,9 @@ const Index = () => {
     )} 
   </Col>
   <Col>
-    <VotingStates />
+    <Row>
+      <VotingStates votersState={votersState}/>
+    </Row>
   </Col>
 </Row>;
 

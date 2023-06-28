@@ -5,7 +5,7 @@ import { ListGroup, ListGroupItem } from 'reactstrap';
 const VoterList = ({ votersState }) => {
     
   return (
-    <ListGroup id='voter-list'>
+    <ListGroup className='voter-list'>
     { votersState.map(voterAddress => (
       <ListGroupItem key={voterAddress}>
         {voterAddress}
