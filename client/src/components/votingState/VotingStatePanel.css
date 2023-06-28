@@ -1,0 +1,21 @@
+#voting-state-panel {
+    margin: 0;
+    padding: 8px 8px 8px 8px;
+    width: 18rem;
+}
+
+#voting-state-panel .card {
+    flex-direction: row;
+    margin-bottom: 0.5rem;
+    height: 22vh;
+}
+
+#voting-state-panel .card img {
+    height: 16vh;
+    width: auto;
+    margin: auto auto auto 1rem;
+}
+
+#voting-state-panel .card-body {
+    text-align: right;
+}
