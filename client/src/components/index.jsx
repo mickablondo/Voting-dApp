@@ -7,8 +7,7 @@ import VotingStates from "./votingState/VotingStatePanel";
 import NoticeNoArtifact from "./notices/NoticeNoArtifact";
 import NoticeWrongNetwork from "./notices/NoticeWrongNetwork";
 import ChangeStatus from "./change_status";
-import VoterControl from "./voter/VoterControl";
-import VoterList from "./voter/VoterList";
+import VoterContainer from "./voter/VoterContainer";
 import AddProposal from "./proposal/ProposalControl";
 import ListProposal from "./proposal/ProposalList";
 
@@ -20,8 +19,10 @@ const Index = () => {
   const [votersState, setVotersState] = useState([]);
  
   const addVoter = (voterAddress) => {
-    console.log("adding a votersState: "+ voterAddress); 
-    setVotersState(votersState => [...votersState, voterAddress]);
+    if (!votersState.includes(voterAddress)) {
+      console.log("adding a votersState: "+ voterAddress);
+      setVotersState(votersState => [...votersState, voterAddress]);
+    }
   };
  
   // Gestion des droits du compte connecté
@@ -53,10 +54,7 @@ const Index = () => {
     {isOwnerState && (
       <Row>
         <ChangeStatus />
-        <VoterList votersState={votersState} />
-        { isOwnerState && (
-          <VoterControl />
-        )}
+        <VoterContainer votersState={votersState} isOwnerState={isOwnerState}/>
       </Row>
     )}
     {isVoterState && (
@@ -67,7 +65,9 @@ const Index = () => {
     )} 
   </Col>
   <Col>
-    <VotingStates />
+    <Row>
+      <VotingStates votersState={votersState}/>
+    </Row>
   </Col>
 </Row>;
 
