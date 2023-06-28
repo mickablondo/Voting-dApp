@@ -6,7 +6,7 @@ import useEth from "../contexts/EthContext/useEth";
 import VotingStates from "./voting_states";
 import NoticeNoArtifact from "./notices/NoticeNoArtifact";
 import NoticeWrongNetwork from "./notices/NoticeWrongNetwork";
-import ChangeStatus from "./change_status";
+import ChangeStatus from "./ChangeStatus";
 import VoterControl from "./voter/VoterControl";
 import VoterList from "./voter/VoterList";
 import AddProposal from "./proposal/ProposalControl";
@@ -23,7 +23,7 @@ const Index = () => {
     console.log("adding a votersState: "+ voterAddress); 
     setVotersState(votersState => [...votersState, voterAddress]);
   };
- 
+
   // Gestion des droits du compte connecté
   useEffect(() => { 
     if (contract) {
