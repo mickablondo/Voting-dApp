@@ -6,7 +6,7 @@ import useEth from "../contexts/EthContext/useEth";
 import VotingStates from "./votingState/VotingStatePanel";
 import NoticeNoArtifact from "./notices/NoticeNoArtifact";
 import NoticeWrongNetwork from "./notices/NoticeWrongNetwork";
-import ChangeStatus from "./change_status";
+import ChangeStatus from "./ChangeStatus";
 import VoterContainer from "./voter/VoterContainer";
 import AddProposal from "./proposal/ProposalControl";
 import ListProposal from "./proposal/ProposalList";
@@ -43,7 +43,7 @@ const Index = () => {
       new Proposal(proposalId, proposal.description, proposal.voteCount)]
     );
   };
- 
+
   // Gestion des droits du compte connecté
   useEffect(() => { 
     if (contract) {
