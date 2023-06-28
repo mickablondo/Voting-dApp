@@ -3,7 +3,7 @@ import Head from "./head";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Col, Container, Row } from 'reactstrap';
 import useEth from "../contexts/EthContext/useEth";
-import VotingStates from "./voting_states";
+import VotingStates from "./votingState/VotingStatePanel";
 import NoticeNoArtifact from "./notices/NoticeNoArtifact";
 import NoticeWrongNetwork from "./notices/NoticeWrongNetwork";
 import ChangeStatus from "./change_status";

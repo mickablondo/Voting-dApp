@@ -1,0 +1,17 @@
+#participation-panel {
+    width: 18rem;
+}
+
+#participation-panel .card {
+    flex-direction: row;
+    height: 22vh;
+}
+
+#participation-panel .card img {
+    height: 16vh;
+    width: auto;
+}
+
+#participation-panel .card-body {
+    text-align: right;
+}
