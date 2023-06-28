@@ -18,17 +18,35 @@ const Index = () => {
   const [isOwnerState, setIsOwnerState] = useState(false);
   const [isVoterState, setIsVoterState] = useState(false); 
   const [votersState, setVotersState] = useState([]);
+  const [proposalsState, setProposalsState] = useState([]);
+
+  // Définition d'une proposal
+  class Proposal {
+    constructor(id, description, voteCount) {
+      this.id = id;
+      this.description = description;
+      this.voteCount = voteCount;
+    }
+  }
  
   const addVoter = (voterAddress) => {
     console.log("adding a votersState: "+ voterAddress); 
     setVotersState(votersState => [...votersState, voterAddress]);
+  };
+
+  const addProposal = async (proposalId) => {
+    console.log("adding a proposalState: "+ proposalId);
+    const proposal = await contract.methods.getOneProposal(proposalId).call({ from: accounts[0]});
+
+    setProposalsState(proposalsState => [...proposalsState,
+      new Proposal(proposalId, proposal.description, proposal.voteCount)]
+    );
   };
  
   // Gestion des droits du compte connecté
   useEffect(() => { 
     if (contract) {
       if(owner === accounts[0]) {
-          console.log('i am the owner !')
           setIsOwnerState(true); 
       }
 
@@ -38,9 +56,21 @@ const Index = () => {
           .on('data', event => {
             addVoter(event.returnValues.voterAddress);
             if(event.returnValues.voterAddress === accounts[0]) { 
-              console.log('i am a voter !')
               setIsVoterState(true);
             }  
+          })
+          .on('changed', changed => console.log(changed))
+          .on('error', err => console.log(err))
+          .on('connected', str => console.log(str));
+      
+      // recherche des proposals dans les évènements
+      contract.events.ProposalRegistered(options)
+          .on('data', event => {
+            try {
+              addProposal(event.returnValues.proposalId);
+            } catch (err) {
+              console.error(err);
+            }
           })
           .on('changed', changed => console.log(changed))
           .on('error', err => console.log(err))
@@ -61,7 +91,7 @@ const Index = () => {
     )}
     {isVoterState && (
       <Row> 
-        <ListProposal />
+        <ListProposal proposalsState={proposalsState}/>
         <AddProposal />
       </Row>
     )} 
