@@ -28,6 +28,13 @@ const Index = () => {
       this.voteCount = voteCount;
     }
   }
+
+  const resetAccountStates = () => {
+    setIsOwnerState(false);
+    setIsVoterState(false);
+    setVotersState([]);
+    setProposalsState([]);
+  };
  
   const addVoter = (voterAddress) => {
     if (!votersState.includes(voterAddress)) {
@@ -45,6 +52,14 @@ const Index = () => {
     );
   };
  
+  // reset states/data related to account
+  useEffect(() => {
+    if (accounts) {
+      resetAccountStates();
+    }
+  }, [accounts])
+  
+
   // Gestion des droits du compte connecté
   useEffect(() => { 
     if (contract) {

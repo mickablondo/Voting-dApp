@@ -5,6 +5,7 @@ import { reducer, actions, initialState } from "./state";
 
 function EthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  let networkChangedSubscription;
 
   const init = useCallback(
     async artifact => {
@@ -23,10 +24,10 @@ function EthProvider({ children }) {
             owner = await contract.methods.owner().call();
             console.log("owner is:"+ owner);
 
-            // refresh page on account or network change  
-            web3.currentProvider
-            .on('accountsChanged', (accounts) => window.location.reload())
-            .on('networkChanged', (networkId) => window.location.reload());
+            // refresh page network change
+            if (networkChangedSubscription == null) {
+              networkChangedSubscription = web3.currentProvider.on('networkChanged', (networkId) => window.location.reload());
+            }
 
           } else {
             console.log("Bad network - no contract");
