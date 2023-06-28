@@ -127,7 +127,7 @@ const Index = () => {
   </Col>
   <Col>
     <Row>
-      <VotingStates votersState={votersState}/>
+      <VotingStates votersState={votersState} proposalsState={proposalsState}/>
     </Row>
   </Col>
 </Row>;

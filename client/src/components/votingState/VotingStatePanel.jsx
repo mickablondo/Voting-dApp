@@ -3,7 +3,7 @@ import {CardBody, CardColumns, Card, CardTitle, CardImg, CardSubtitle, CardText}
 
 import './VotingStatePanel.css';
 
-const VotingStates = ({ votersState }) => {
+const VotingStates = ({ votersState, proposalsState }) => {
   return ( 
     <CardColumns id="voting-state-panel">
       
@@ -26,7 +26,7 @@ const VotingStates = ({ votersState }) => {
       <Card>
         <CardImg alt="Proposals image" src="/images/voting-state-panel/questions-icon-60.png" />
         <CardBody>
-          <CardTitle tag="h5"> 777 </CardTitle>
+          <CardTitle tag="h5"> {proposalsState.length} </CardTitle>
           <CardText className="mb-2 text-muted" tag="h6"> Proposals </CardText>
         </CardBody>
       </Card>
