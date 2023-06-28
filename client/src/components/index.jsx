@@ -18,7 +18,8 @@ const Index = () => {
   const [isVoterState, setIsVoterState] = useState(false); 
   const [votersState, setVotersState] = useState([]);
   const [proposalsState, setProposalsState] = useState([]);
-
+  let voterRegisteredSubscription, proposalRegisteredSubscription;
+  
   // Définition d'une proposal
   class Proposal {
     constructor(id, description, voteCount) {
@@ -27,11 +28,18 @@ const Index = () => {
       this.voteCount = voteCount;
     }
   }
+
+  const resetAccountStates = () => {
+    setIsOwnerState(false);
+    setIsVoterState(false);
+    setVotersState([]);
+    setProposalsState([]);
+  };
  
   const addVoter = (voterAddress) => {
     if (!votersState.includes(voterAddress)) {
       console.log("adding a votersState: "+ voterAddress);
-      setVotersState(votersState => [...votersState, voterAddress]);
+      setVotersState(voters => [...voters, voterAddress]);
     }
   };
 
@@ -43,7 +51,14 @@ const Index = () => {
       new Proposal(proposalId, proposal.description, proposal.voteCount)]
     );
   };
-
+ 
+  // reset states/data related to account
+  useEffect(() => {
+    if (accounts) {
+      resetAccountStates();
+    }
+  }, [accounts])
+  
   // Gestion des droits du compte connecté
   useEffect(() => { 
     if (contract) {
@@ -53,30 +68,46 @@ const Index = () => {
 
       // recherche des voters dans les évènements
       let options = {filter: {value: [],},fromBlock: 0};
-      contract.events.VoterRegistered(options)
-          .on('data', event => {
-            addVoter(event.returnValues.voterAddress);
-            if(event.returnValues.voterAddress === accounts[0]) { 
-              setIsVoterState(true);
-            }  
-          })
-          .on('changed', changed => console.log(changed))
-          .on('error', err => console.log(err))
-          .on('connected', str => console.log(str));
+      if (voterRegisteredSubscription == null) {
+        voterRegisteredSubscription = contract.events.VoterRegistered(options)
+            .on('data', event => {
+              addVoter(event.returnValues.voterAddress);
+              if(event.returnValues.voterAddress === accounts[0]) { 
+                setIsVoterState(true);
+              }  
+            })
+            .on('changed', changed => console.log(changed))
+            .on('error', err => console.log(err))
+            .on('connected', str => console.log(str));
+      }
       
       // recherche des proposals dans les évènements
-      contract.events.ProposalRegistered(options)
-          .on('data', event => {
-            try {
-              addProposal(event.returnValues.proposalId);
-            } catch (err) {
-              console.error(err);
-            }
-          })
-          .on('changed', changed => console.log(changed))
-          .on('error', err => console.log(err))
-          .on('connected', str => console.log(str));
+      if (voterRegisteredSubscription == null) {
+        proposalRegisteredSubscription = contract.events.ProposalRegistered(options)
+            .on('data', event => {
+              try {
+                addProposal(event.returnValues.proposalId);
+              } catch (err) {
+                console.error(err);
+              }
+            })
+            .on('changed', changed => console.log(changed))
+            .on('error', err => console.log(err))
+            .on('connected', str => console.log(str));
+      }
     } 
+
+    return () => {
+      if (voterRegisteredSubscription != null) {
+        voterRegisteredSubscription.unsubscribe();
+        voterRegisteredSubscription = null;
+      }
+      if (proposalRegisteredSubscription != null) {
+        proposalRegisteredSubscription.unsubscribe();
+        proposalRegisteredSubscription = null;
+      }
+    };
+
   }, [contract]);
 
   const body = <Row>
