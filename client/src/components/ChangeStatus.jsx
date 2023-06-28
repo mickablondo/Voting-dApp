@@ -1,28 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Card, CardBody } from 'reactstrap';
 import EnumWorkflowStatus from './EnumWorkflowStatus';
 import useEth from '../contexts/EthContext/useEth';
 
-const ChangeStatus = () => {
+const ChangeStatus = ({ currentStatus }) => {
 
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(parseInt(currentStatus));
   const { state: {  contract, accounts } } = useEth();
-
-  // Récupération de l'état du workflow
-  useEffect(() => {
-    (async function () {
-        if (contract) {
-          const currentStatus = await contract.methods.workflowStatus().call();
-          setActiveStep(parseInt(currentStatus));
-        }
-    })();
-  }, [contract]);
 
   const handleStepClick = (step) => {
     if (parseInt(step) === activeStep + 1) {
       setActiveStep(parseInt(step));
-
-      let options = {filter: {value: [],},fromBlock: 0};
 
       switch (step) {
         case EnumWorkflowStatus.ProposalsRegistrationStarted:

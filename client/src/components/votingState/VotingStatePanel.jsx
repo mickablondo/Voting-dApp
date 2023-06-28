@@ -1,5 +1,5 @@
 import React from 'react'
-import {CardBody, CardColumns, Card, CardTitle, CardImg, CardSubtitle, CardText} from 'reactstrap'
+import {CardBody, CardColumns, Card, CardTitle, CardImg, CardText} from 'reactstrap'
 
 import './VotingStatePanel.css';
 
