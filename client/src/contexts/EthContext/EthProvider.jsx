@@ -5,6 +5,7 @@ import { reducer, actions, initialState } from "./state";
 
 function EthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  let networkChangedSubscription;
 
   const init = useCallback(
     async artifact => {
@@ -15,19 +16,32 @@ function EthProvider({ children }) {
         const { abi } = artifact;
         let address, contract, owner;
         try {
-          address = artifact.networks[networkID].address;
-          contract = new web3.eth.Contract(abi, address);
+          if (typeof(artifact.networks[networkID]) !== 'undefined') {
+            address = artifact.networks[networkID].address;
+            contract = new web3.eth.Contract(abi, address);
 
-          // Récupération du owner
-          owner = await contract.methods.owner().call();
-          console.log("owner is:"+ owner);
+            // Récupération du owner
+            owner = await contract.methods.owner().call();
+            console.log("owner is:"+ owner);
+
+            // refresh page network change
+            if (networkChangedSubscription == null) {
+              networkChangedSubscription = web3.currentProvider.on('networkChanged', (networkId) => window.location.reload());
+            }
+
+          } else {
+            console.log("Bad network - no contract");
+          }
         } catch (err) {
           console.error(err);
         }
+        
         dispatch({
           type: actions.init,
           data: { artifact, web3, accounts, networkID, contract, owner }
         });
+      } else {
+        console.log("no artifact");
       }
     }, []);
 
@@ -44,15 +58,23 @@ function EthProvider({ children }) {
     tryInit();
   }, [init]);
 
+  let eventChangeSubscription = false;
+
   useEffect(() => {
     const events = ["chainChanged", "accountsChanged"];
     const handleChange = () => {
       init(state.artifact);
     };
-
-    events.forEach(e => window.ethereum.on(e, handleChange));
+ 
+    if (!eventChangeSubscription) {
+      eventChangeSubscription = true;
+      events.forEach(e => window.ethereum.on(e, handleChange));
+    }
     return () => {
-      events.forEach(e => window.ethereum.removeListener(e, handleChange));
+      if (eventChangeSubscription) {
+        events.forEach(e => window.ethereum.removeListener(e, handleChange));
+        eventChangeSubscription = false;
+      }
     };
   }, [init, state.artifact]);
 
