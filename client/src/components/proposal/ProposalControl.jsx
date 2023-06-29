@@ -7,7 +7,6 @@ const AddProposal = ({ currentStatus }) => {
 
   const [proposalInputState, setProposalInputState] = useState("");
   const { state: {  contract, accounts } } = useEth();
-  console.log('currentStatus',currentStatus)
 
   const onProposalInputChange = (value) => {
     setProposalInputState(value);

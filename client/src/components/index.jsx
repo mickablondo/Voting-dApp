@@ -45,11 +45,6 @@ const Index = () => {
     );
   };
 
-  const getCurrentStatus = async () => {
-    const status = await contract.methods.workflowStatus().call();
-    setCurrentStatus(status);
-  };
-
   // Gestion des droits du compte connecté et appel aux différents éléments du Smart Contract
   useEffect(() => { 
     if (contract) {
@@ -84,7 +79,18 @@ const Index = () => {
           .on('connected', str => console.log(str));
       
       // Récupération du statut en cours dans le workflow
-      getCurrentStatus();
+      contract.events.WorkflowStatusChange(options)
+          .on('data', event => {
+            try {
+              console.log(event.returnValues)
+              setCurrentStatus(parseInt(event.returnValues.newStatus));
+            } catch (err) {
+              console.error(err);
+            }
+          })
+          .on('changed', changed => console.log(changed))
+          .on('error', err => console.log(err))
+          .on('connected', str => console.log(str));
     } 
   }, [contract]);
 
