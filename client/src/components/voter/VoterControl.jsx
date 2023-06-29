@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import useEth from "../../contexts/EthContext/useEth";
-
+import EnumWorkflowStatus from '../EnumWorkflowStatus';
 import { Form, Row, Col, Label, Input, Button } from 'reactstrap';
 
-const VoterControl = ({votersState}) => {
+const VoterControl = ({votersState, currentStatus}) => {
   
   const [voterInputState, setVoterInputState] = useState("");
-  const [isVoteRunningState, setIsVoteRunningState] = useState(false);
+  const [isVoteRunningState, setIsVoteRunningState] = useState(currentStatus === parseInt(EnumWorkflowStatus.RegisteringVoters));
   const { state: {  contract, owner } } = useEth();
   
   const onVoterInputChange = (value) => {
@@ -30,6 +30,7 @@ const VoterControl = ({votersState}) => {
       return;
     }
 
+    if(currentStatus === parseInt())
     setIsVoteRunningState(true);
     try {
       contract.methods.addVoter(voterInputState).send({from: owner})

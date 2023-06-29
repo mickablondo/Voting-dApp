@@ -18,8 +18,10 @@ const Index = () => {
   const [isVoterState, setIsVoterState] = useState(false); 
   const [votersState, setVotersState] = useState([]);
   const [proposalsState, setProposalsState] = useState([]);
-  let voterRegisteredSubscription, proposalRegisteredSubscription;
+  const [currentStatus, setCurrentStatus] = useState(0);
   
+  let voterRegisteredSubscription, proposalRegisteredSubscription;
+
   // Définition d'une proposal
   class Proposal {
     constructor(id, description, voteCount) {
@@ -51,7 +53,7 @@ const Index = () => {
       new Proposal(proposalId, proposal.description, proposal.voteCount)]
     );
   };
- 
+  
   // reset states/data related to account
   useEffect(() => {
     if (accounts) {
@@ -59,7 +61,7 @@ const Index = () => {
     }
   }, [accounts])
   
-  // Gestion des droits du compte connecté
+  // Gestion des droits du compte connecté et appel aux différents éléments du Smart Contract
   useEffect(() => { 
     if (contract) {
       if(owner === accounts[0]) {
@@ -95,6 +97,20 @@ const Index = () => {
             .on('error', err => console.log(err))
             .on('connected', str => console.log(str));
       }
+
+      // Récupération du statut en cours dans le workflow
+      contract.events.WorkflowStatusChange(options)
+          .on('data', event => {
+            try {
+              console.log(event.returnValues)
+              setCurrentStatus(parseInt(event.returnValues.newStatus));
+            } catch (err) {
+              console.error(err);
+            }
+          })
+          .on('changed', changed => console.log(changed))
+          .on('error', err => console.log(err))
+          .on('connected', str => console.log(str));
     } 
 
     return () => {
@@ -114,14 +130,14 @@ const Index = () => {
   <Col>
     {isOwnerState && (
       <Row>
-        <ChangeStatus />
-        <VoterContainer votersState={votersState} isOwnerState={isOwnerState}/>
+        <ChangeStatus currentStatus={currentStatus}/>
+        <VoterContainer votersState={votersState} isOwnerState={isOwnerState} currentStatus={currentStatus}/>
       </Row>
     )}
     {isVoterState && (
       <Row> 
         <ListProposal proposalsState={proposalsState}/>
-        <AddProposal />
+        <AddProposal currentStatus={currentStatus}/>
       </Row>
     )} 
   </Col>
