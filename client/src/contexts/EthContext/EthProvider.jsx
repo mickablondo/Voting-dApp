@@ -1,10 +1,14 @@
 import React, { useReducer, useCallback, useEffect } from "react";
 import Web3 from "web3";
 import EthContext from "./EthContext";
-import { reducer, actions, initialState } from "./state";
+import { 
+  reducer as web3StateReducer, 
+  ACTIONS as WEB3_STATE_ACTIONS, 
+  INITIAL_STATE as WEB3_INITIAL_STATE
+} from "./web3StateReducer";
 
 function EthProvider({ children }) {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [web3State, dispatchWeb3State] = useReducer(web3StateReducer, WEB3_INITIAL_STATE);
   let networkChangedSubscription;
 
   const init = useCallback(
@@ -36,8 +40,8 @@ function EthProvider({ children }) {
           console.error(err);
         }
         
-        dispatch({
-          type: actions.init,
+        dispatchWeb3State({
+          type: WEB3_STATE_ACTIONS.INIT,
           data: { artifact, web3, accounts, networkID, contract, owner }
         });
       } else {
@@ -63,7 +67,7 @@ function EthProvider({ children }) {
   useEffect(() => {
     const events = ["chainChanged", "accountsChanged"];
     const handleChange = () => {
-      init(state.artifact);
+      init(web3State.artifact);
     };
  
     if (!eventChangeSubscription) {
@@ -76,12 +80,12 @@ function EthProvider({ children }) {
         eventChangeSubscription = false;
       }
     };
-  }, [init, state.artifact]);
+  }, [init, web3State.artifact]);
 
   return (
     <EthContext.Provider value={{
-      state,
-      dispatch
+      state: web3State,
+      dispatch: dispatchWeb3State
     }}>
       {children}
     </EthContext.Provider>
