@@ -9,13 +9,9 @@ const Head = ( { isVoter, isOwner }) => {
 
   const connect = async () => {
     if (window.ethereum) {
-      console.log('1')
       await window.ethereum.request({ method: "eth_requestAccounts" });
-      console.log('2')
       window.web3 = new Web3(window.ethereum);
-      console.log('3')
       const account = web3.eth.accounts;
-      console.log('4')
       const walletAddress = account.givenProvider.selectedAddress;
       console.log(`Wallet: ${walletAddress}`);
     } else {
