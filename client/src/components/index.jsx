@@ -8,9 +8,7 @@ import NoticeNoArtifact from "./notices/NoticeNoArtifact";
 import NoticeWrongNetwork from "./notices/NoticeWrongNetwork";
 import ChangeStatus from "./ChangeStatus";
 import VoterContainer from "./voter/VoterContainer";
-import AddProposal from "./proposal/ProposalControl";
-import ListProposal from "./proposal/ProposalList";
-import ProposalVoting from "./proposal/ProposalVoting";
+import ProposalContainer from "./proposal/ProposalContainer";
 
 const Index = () => {
 
@@ -137,11 +135,7 @@ const Index = () => {
     {isVoterState && (
       <>
       <Row> 
-        <ListProposal proposalsState={proposalsState}/>
-        <AddProposal currentStatus={currentStatus}/>
-      </Row>
-      <Row>
-        <ProposalVoting currentStatus={currentStatus}/>
+        <ProposalContainer proposalsState={proposalsState} currentStatus={currentStatus}/>
       </Row>
       </>
     )} 
