@@ -8,8 +8,7 @@ import NoticeNoArtifact from "./notices/NoticeNoArtifact";
 import NoticeWrongNetwork from "./notices/NoticeWrongNetwork";
 import ChangeStatus from "./ChangeStatus";
 import VoterContainer from "./voter/VoterContainer";
-import AddProposal from "./proposal/ProposalControl";
-import ListProposal from "./proposal/ProposalList";
+import ProposalContainer from "./proposal/ProposalContainer";
 
 const Index = () => {
 
@@ -84,7 +83,7 @@ const Index = () => {
       }
       
       // recherche des proposals dans les évènements
-      // if (voterRegisteredSubscription == null) {
+      if (proposalRegisteredSubscription == null) {
         proposalRegisteredSubscription = contract.events.ProposalRegistered(options)
             .on('data', event => {
               try {
@@ -96,7 +95,7 @@ const Index = () => {
             .on('changed', changed => console.log(changed))
             .on('error', err => console.log(err))
             .on('connected', str => console.log(str));
-      //}
+      }
 
       // Récupération du statut en cours dans le workflow
       contract.events.WorkflowStatusChange(options)
@@ -134,10 +133,11 @@ const Index = () => {
       </Row>
     )}
     {isVoterState && (
+      <>
       <Row> 
-        <ListProposal proposalsState={proposalsState}/>
-        <AddProposal currentStatus={currentStatus}/>
+        <ProposalContainer proposalsState={proposalsState} currentStatus={currentStatus}/>
       </Row>
+      </>
     )} 
   </Col>
   <Col>
