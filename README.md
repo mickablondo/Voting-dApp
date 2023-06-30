@@ -1,27 +1,15 @@
 # Alyra-project-3
 
-## TODO
-- script de déploiement
-- Solidity : natspec + ddos gas limit + optimisation + TU
-- Front : l’enregistrement d’une liste blanche d'électeurs. 
-- Front : à l'administrateur de commencer la session d'enregistrement de la proposition.
-- Front : aux électeurs inscrits d’enregistrer leurs propositions.
-- Front : à l'administrateur de mettre fin à la session d'enregistrement des propositions.
-- Front : à l'administrateur de commencer la session de vote.
-- Front : aux électeurs inscrits de voter pour leurs propositions préférées.
-- Front : à l'administrateur de mettre fin à la session de vote.
-- Front : à l'administrateur de comptabiliser les votes.
-- Front : à tout le monde de consulter le résultat.
-- Front : gérer les états (bouton visible ou non)
-- Front : écouter les events pour le workflow status / voters pour l'owner / lister les proposals dispo / nb Voters + nb Proposals + nb votes
-- vidéo
-- déploiement prod (Vercel)
+## Démo
+Lien vidéo :  
+Lien de la dApp sur un déploiement public :  
+Adresse de déploiement sur Goerli :  
 
-## Conception
+## Conception <i>(à garder ?)</i>
 [Balsamiq](https://balsamiq.com/)
 ![Alt text](conception.png)
 
-## Commandes passées
+## Commandes passées <i>(à revoir)</i>
 ```bash
 truffle unbox react
 cd client
