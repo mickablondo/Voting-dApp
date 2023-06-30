@@ -9,6 +9,7 @@ import NoticeWrongNetwork from "./notices/NoticeWrongNetwork";
 import ChangeStatus from "./ChangeStatus";
 import VoterContainer from "./voter/VoterContainer";
 import ProposalContainer from "./proposal/ProposalContainer";
+import GetVoterContainer from "./voter/GetVoterContainer";
 
 const Index = () => {
 
@@ -147,7 +148,8 @@ const Index = () => {
     )}
     {isVoterState && (
       <>
-      <Row> 
+      <Row>
+        <GetVoterContainer /> 
         <ProposalContainer proposalsState={proposalsState} currentStatus={currentStatus} votersHaveVoted={votersHaveVoted}/>
       </Row>
       </>
