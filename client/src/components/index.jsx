@@ -10,6 +10,7 @@ import ChangeStatus from "./ChangeStatus";
 import VoterContainer from "./voter/VoterContainer";
 import AddProposal from "./proposal/ProposalControl";
 import ListProposal from "./proposal/ProposalList";
+import ProposalVoting from "./proposal/ProposalVoting";
 
 const Index = () => {
 
@@ -134,10 +135,15 @@ const Index = () => {
       </Row>
     )}
     {isVoterState && (
+      <>
       <Row> 
         <ListProposal proposalsState={proposalsState}/>
         <AddProposal currentStatus={currentStatus}/>
       </Row>
+      <Row>
+        <ProposalVoting currentStatus={currentStatus}/>
+      </Row>
+      </>
     )} 
   </Col>
   <Col>
