@@ -6,7 +6,7 @@ import useEth from "../contexts/EthContext/useEth";
 import VotingStates from "./votingState/VotingStatePanel";
 import NoticeNoArtifact from "./notices/NoticeNoArtifact";
 import NoticeWrongNetwork from "./notices/NoticeWrongNetwork";
-import ChangeStatus from "./ChangeStatus";
+import ChangeStatus from "./changeStatus/ChangeStatus";
 import VoterContainer from "./voter/VoterContainer";
 import ProposalContainer from "./proposal/ProposalContainer";
 import GetVoterContainer from "./voter/GetVoterContainer";
@@ -139,7 +139,7 @@ const Index = () => {
   }, [contract]);
 
   const body = <Row>
-  <Col>
+  <Col className="col-sm-9">
     {isOwnerState && (
       <Row>
         <ChangeStatus currentStatus={currentStatus}/>
@@ -155,7 +155,7 @@ const Index = () => {
       </>
     )} 
   </Col>
-  <Col>
+  <Col className="col-sm-3">
     <Row>
       <VotingStates votersState={votersState} proposalsState={proposalsState}/>
     </Row>

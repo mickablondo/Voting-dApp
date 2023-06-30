@@ -1,17 +1,17 @@
 #voting-state-panel {
-    margin: 0;
-    padding: 8px 8px 8px 8px;
-    width: 18rem;
+    margin: 1rem auto;
 }
 
 #voting-state-panel .card {
     flex-direction: row;
-    margin-bottom: 0.5rem;
-    height: 22vh;
+    flex-wrap: wrap;
+    margin-bottom: 1rem; 
+    min-height: 8rem;
 }
 
 #voting-state-panel .card img {
-    height: 16vh;
+    max-height: 6rem;
+    min-width: 5rem;
     width: auto;
     margin: auto auto auto 1rem;
 }

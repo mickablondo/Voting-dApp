@@ -7,7 +7,7 @@ import './VoterContainer.css'
 import StateIcon from "../stateIcon/StateIcon";
 
 const VoterComponent = ({ votersState, isOwnerState, currentStatus }) => {
-
+ 
   return ( 
     <Card body id="voter-container">
         <CardTitle tag="h5"> 

@@ -11,7 +11,7 @@ const VotingStates = ({ votersState, proposalsState }) => {
         <CardImg alt="Voters participation image" src="/images/voting-state-panel/voting-icon-64.png" />
         <CardBody>
           <CardTitle tag="h5"> X % </CardTitle>
-          <CardText className="mb-2 text-muted" tag="h6"> Participation (X votes) </CardText>
+          <CardText className="text-muted" tag="h6"> Participation (X votes) </CardText>
         </CardBody>
       </Card>
 

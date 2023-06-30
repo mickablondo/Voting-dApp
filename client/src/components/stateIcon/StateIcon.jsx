@@ -1,8 +1,7 @@
-import React from 'react'
-// import EnabledLogo from './green-circle-48.png'
-// import DisabledImg from './yellow-circle-48.png'
+import React from 'react' 
 
-const StateIcon = (enabled) => {
+const StateIcon = ({enabled}) => {
+ 
   return (
     <img className="state-icon" width="18px"
         alt={enabled? "enabled icon": "disabled icon"} 
