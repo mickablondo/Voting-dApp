@@ -16,6 +16,7 @@ const Index = () => {
   const [isOwnerState, setIsOwnerState] = useState(false);
   const [isVoterState, setIsVoterState] = useState(false); 
   const [votersState, setVotersState] = useState([]);
+  const [votersHaveVoted, setVotersHaveVoted] = useState([]);
   const [proposalsState, setProposalsState] = useState([]);
   const [currentStatus, setCurrentStatus] = useState(0);
   
@@ -109,6 +110,18 @@ const Index = () => {
           .on('changed', changed => console.log(changed))
           .on('error', err => console.log(err))
           .on('connected', str => console.log(str));
+
+      contract.events.Voted(options)
+          .on('data', event => {
+            try {
+              setVotersHaveVoted(voters => [...voters, event.returnValues.voter]);
+            } catch (err) {
+              console.error(err);
+            }
+          })
+          .on('changed', changed => console.log(changed))
+          .on('error', err => console.log(err))
+          .on('connected', str => console.log(str));
     } 
 
     return () => {
@@ -135,7 +148,7 @@ const Index = () => {
     {isVoterState && (
       <>
       <Row> 
-        <ProposalContainer proposalsState={proposalsState} currentStatus={currentStatus}/>
+        <ProposalContainer proposalsState={proposalsState} currentStatus={currentStatus} votersHaveVoted={votersHaveVoted}/>
       </Row>
       </>
     )} 

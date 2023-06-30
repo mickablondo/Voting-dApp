@@ -4,13 +4,13 @@ import ListProposal from "./ProposalList";
 
 import './ProposalContainer.css'
 
-const ProposalComponent = ({ proposalsState, currentStatus }) => {
+const ProposalComponent = ({ proposalsState, currentStatus, votersHaveVoted }) => {
 
   return ( 
     <Card body id="proposal-container">
         <CardTitle tag="h5"> Proposals </CardTitle>
         <AddProposal currentStatus={currentStatus}/>
-        <ListProposal proposalsState={proposalsState} currentStatus={currentStatus}/>
+        <ListProposal proposalsState={proposalsState} currentStatus={currentStatus} votersHaveVoted={votersHaveVoted}/>
     </Card> 
   )
 }
