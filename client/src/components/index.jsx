@@ -83,7 +83,7 @@ const Index = () => {
       }
       
       // recherche des proposals dans les évènements
-      // if (voterRegisteredSubscription == null) {
+      if (proposalRegisteredSubscription == null) {
         proposalRegisteredSubscription = contract.events.ProposalRegistered(options)
             .on('data', event => {
               try {
@@ -95,7 +95,7 @@ const Index = () => {
             .on('changed', changed => console.log(changed))
             .on('error', err => console.log(err))
             .on('connected', str => console.log(str));
-      //}
+      }
 
       // Récupération du statut en cours dans le workflow
       contract.events.WorkflowStatusChange(options)
