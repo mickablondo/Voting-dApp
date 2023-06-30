@@ -6,7 +6,7 @@ import { Form, Row, Col, Label, Input, Button } from 'reactstrap';
 const VoterControl = ({votersState, currentStatus}) => {
   
   const [voterInputState, setVoterInputState] = useState("");
-  const [isVoteRunningState, setIsVoteRunningState] = useState(currentStatus === parseInt(EnumWorkflowStatus.RegisteringVoters));
+  const [isVoteRunningState, setIsVoteRunningState] = useState(false);
   const { state: {  contract, owner } } = useEth();
   
   const onVoterInputChange = (value) => {
@@ -46,7 +46,7 @@ const VoterControl = ({votersState, currentStatus}) => {
     }
 
   };
-
+ 
   return ( 
     <Form onSubmit={onAddVoterSubmit} >
       <Row className="row-cols-lg-auto">
@@ -55,11 +55,11 @@ const VoterControl = ({votersState, currentStatus}) => {
           <Input name="voterAddress" placeholder="0x..." className="voter-address-input" type="text" 
             value={voterInputState}
             onChange={e => onVoterInputChange(e.target.value)}
-            disabled={isVoteRunningState}
+            disabled={isVoteRunningState || currentStatus !== EnumWorkflowStatus.RegisteringVoters}
           />
         </Col>
         <Col>
-          <Button disabled={isVoteRunningState}>Add voter</Button>
+          <Button disabled={isVoteRunningState || currentStatus !== EnumWorkflowStatus.RegisteringVoters}>Add voter</Button>
         </Col>
       </Row> 
     </Form>

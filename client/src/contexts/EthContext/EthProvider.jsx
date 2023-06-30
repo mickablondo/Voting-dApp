@@ -9,7 +9,7 @@ import {
 
 function EthProvider({ children }) {
   const [web3State, dispatchWeb3State] = useReducer(web3StateReducer, WEB3_INITIAL_STATE);
-  let networkChangedSubscription;
+  let chainChangedSubscription;
 
   const init = useCallback(
     async artifact => {
@@ -29,8 +29,8 @@ function EthProvider({ children }) {
             console.log("owner is:"+ owner);
 
             // refresh page network change
-            if (networkChangedSubscription == null) {
-              networkChangedSubscription = web3.currentProvider.on('networkChanged', (networkId) => window.location.reload());
+            if (chainChangedSubscription == null) {
+              chainChangedSubscription = web3.currentProvider.on('chainChanged', (networkId) => window.location.reload());
             }
 
           } else {
