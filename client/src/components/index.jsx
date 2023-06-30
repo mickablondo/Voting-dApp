@@ -84,7 +84,7 @@ const Index = () => {
       }
       
       // recherche des proposals dans les évènements
-      if (voterRegisteredSubscription == null) {
+      // if (voterRegisteredSubscription == null) {
         proposalRegisteredSubscription = contract.events.ProposalRegistered(options)
             .on('data', event => {
               try {
@@ -96,13 +96,12 @@ const Index = () => {
             .on('changed', changed => console.log(changed))
             .on('error', err => console.log(err))
             .on('connected', str => console.log(str));
-      }
+      //}
 
       // Récupération du statut en cours dans le workflow
       contract.events.WorkflowStatusChange(options)
           .on('data', event => {
             try {
-              console.log(event.returnValues)
               setCurrentStatus(parseInt(event.returnValues.newStatus));
             } catch (err) {
               console.error(err);
