@@ -152,10 +152,20 @@ const Index = () => {
       if (subscriptionsRef.current.voted === null) {
         console.log("add subscriptions.Voted")
         const subscription = contract.events.Voted(options, (error, event) => {
-          console.log("voted received", event, error)
           if (event) { 
             try {
-              setVotersHaveVoted(voters => [...voters, event.returnValues.voter]);
+              setVotersHaveVoted(votes => {
+                if (votes.filter(v => v.voter === event.returnValues.voter).length === 0) {
+                  console.log(`Add new vote for proposal ${event.returnValues.proposalId} from ${event.returnValues.voter}`);
+                  return [...votes, {
+                    voter: event.returnValues.voter, 
+                    proposalId: parseInt(event.returnValues.proposalId)
+                  }];
+                } else {
+                  console.log("Already exists! Could not add vote from "+ event.returnValues.voter);
+                  return votes;
+                }
+            });
             } catch (err) {
               console.log("Voted event error", err);
             }
@@ -196,7 +206,7 @@ const Index = () => {
       <Row>
         <GetVoterContainer /> 
         { currentStatus === EnumWorkflowStatus.VotesTallied ?
-          <WinningProposal proposalsState={proposalsState}/>
+          <WinningProposal proposalsState={proposalsState} votersHaveVoted={votersHaveVoted} />
           : <ProposalContainer proposalsState={proposalsState} currentStatus={currentStatus} votersHaveVoted={votersHaveVoted}/>
         }
       </Row>
@@ -212,7 +222,7 @@ const Index = () => {
   </Col>
   <Col className="col-sm-3">
     <Row>
-      <VotingStates votersState={votersState} proposalsState={proposalsState}/>
+      <VotingStates votersState={votersState} proposalsState={proposalsState} votersHaveVoted={votersHaveVoted} />
     </Row>
   </Col>
 </Row>;
