@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { CardBody, CardColumns, Card, CardTitle, CardImg, CardText, Button } from 'reactstrap'
-import EnumWorkflowStatus from '../EnumWorkflowStatus';
+import { EnumWorkflowStatus } from '../EnumWorkflowStatus';
 import useEth from "../../contexts/EthContext/useEth";
 import './VotingStatePanel.css';
 
@@ -28,14 +28,14 @@ const VotingStates = ({ votersState, proposalsState, currentStatus }) => {
         } 
         newState.participantCount = totalVotes; 
       } 
-      if (newState.registredCount != participationState.registredCount
-        || newState.participantCount != participationState.participantCount) {
+      if (newState.registredCount !== participationState.registredCount
+        || newState.participantCount !== participationState.participantCount) {
           newState.rate = Math.trunc(newState.participantCount*100 / newState.registredCount);
           setParticipationState(newState);
       }
     }
      
-  }, [votersState, proposalsState])
+  }, [votersState, proposalsState, participationState])
   
 
   const getWinningProposal = () => {

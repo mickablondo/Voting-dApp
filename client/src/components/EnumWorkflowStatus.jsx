@@ -6,5 +6,14 @@ const EnumWorkflowStatus = {
     VotingSessionEnded: 4,
     VotesTallied: 5
 }
+const EnumWorkflowStatusValues = [
+	'RegisteringVoters',
+    'ProposalsRegistrationStarted',
+    'ProposalsRegistrationEnded',
+    'VotingSessionStarted',
+    'VotingSessionEnded',
+    'VotesTallied'
+]
+ 
 
-export default EnumWorkflowStatus
+export { EnumWorkflowStatus, EnumWorkflowStatusValues }

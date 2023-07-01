@@ -1,7 +1,7 @@
 import { Card, CardTitle } from "reactstrap";
 import VoterControl from "./VoterControl";
 import VoterList from "./VoterList";
-import EnumWorkflowStatus from "../EnumWorkflowStatus";
+import { EnumWorkflowStatus } from "../EnumWorkflowStatus";
 
 import './VoterContainer.css'
 import StateIcon from "../stateIcon/StateIcon";

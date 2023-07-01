@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import useEth from "../../contexts/EthContext/useEth";
 import { Form, Row, Col, Input, Button } from 'reactstrap';
-import EnumWorkflowStatus from '../EnumWorkflowStatus';
+import { EnumWorkflowStatus } from '../EnumWorkflowStatus';
+import toast from 'react-hot-toast';
+import { toasterOptionsWithSuccess } from '../toasterConfig'
 
 const AddProposal = ({ currentStatus }) => {
 
@@ -15,8 +17,16 @@ const AddProposal = ({ currentStatus }) => {
   const onAddProposalSubmit = (e) => {
     e.preventDefault(); 
     try {
-      contract.methods.addProposal(proposalInputState).send({from: accounts[0]});
-      setProposalInputState("");
+      const promise = contract.methods.addProposal(proposalInputState).send({from: accounts[0]})
+      .then(() => setProposalInputState(""));
+      
+      toast.promise(promise, {
+        loading: 'Loading',
+        success: () => "Proposal successfully added!",
+        error: (err) => `This just happened: ${err?.toString()}`,
+      },
+      toasterOptionsWithSuccess);
+      
     } catch (err) {
       console.error(err);
     }

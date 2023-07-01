@@ -6,7 +6,8 @@
     "test": "npx truffle test",
     "migrate:local": "npx truffle migrate --network local",
     "ganache": "ganache -m \"`cat .ganache-mnemonic`\"",
-    "script:register_voters": "npx truffle exec scripts/register_voters.js --network local"
+    "script:register_voters": "npx truffle exec scripts/register_voters.js --network local",
+    "script:show_accounts": "npx truffle exec scripts/show_accounts.js --network local"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.9.2",

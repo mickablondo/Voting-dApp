@@ -10,7 +10,7 @@ import ChangeStatus from "./changeStatus/ChangeStatus";
 import VoterContainer from "./voter/VoterContainer";
 import ProposalContainer from "./proposal/ProposalContainer";
 import GetVoterContainer from "./voter/GetVoterContainer";
-
+import { Toaster } from 'react-hot-toast';
 import './index.css'
 
 const Index = () => {
@@ -178,6 +178,7 @@ const Index = () => {
 
   return (
     <Container>
+        <Toaster  position="bottom-right" reverseOrder={false} />
         <Row>
           <Head isOwner={isOwnerState} isVoter={isVoterState}/>
         </Row>
