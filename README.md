@@ -6,7 +6,7 @@ This project was developed by [Adrien Launay](https://github.com/alowoa) & [Mick
 ## Démo
 Lien vidéo :  
 Lien de la dApp sur un déploiement public :  
-Adresse de déploiement sur Goerli :  
+Voting contract deployed on Goerli in : 0x3c53259ED1ba5490c0380De4f8c66e583E515c89  
 
 ## Frontend
 
