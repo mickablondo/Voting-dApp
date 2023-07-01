@@ -28,14 +28,14 @@ const VotingStates = ({ votersState, proposalsState, currentStatus }) => {
         } 
         newState.participantCount = totalVotes; 
       } 
-      if (newState.registredCount != participationState.registredCount
-        || newState.participantCount != participationState.participantCount) {
+      if (newState.registredCount !== participationState.registredCount
+        || newState.participantCount !== participationState.participantCount) {
           newState.rate = Math.trunc(newState.participantCount*100 / newState.registredCount);
           setParticipationState(newState);
       }
     }
      
-  }, [votersState, proposalsState])
+  }, [votersState, proposalsState, participationState])
   
 
   const getWinningProposal = () => {
