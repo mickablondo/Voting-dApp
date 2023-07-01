@@ -46,7 +46,7 @@ const ListProposal = ({ proposalsState, currentStatus, votersHaveVoted }) => {
         </ListGroupItem>
       ))}
       </ListGroup>
-      { votersHaveVoted.length === 0 || votersHaveVoted.find((voter) => voter === accounts[0]) === null ?
+      { votersHaveVoted.length === 0 || votersHaveVoted.find((voter) => voter === accounts[0]) === undefined ?
       <Button
         color="primary"
         onClick={handleActionButtonClick}
