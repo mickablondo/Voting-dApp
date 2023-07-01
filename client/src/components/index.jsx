@@ -201,6 +201,13 @@ const Index = () => {
         }
       </Row>
       </>
+    )}
+    { !isVoterState && !isOwnerState && currentStatus === EnumWorkflowStatus.VotesTallied && (
+      <>
+      <Row>
+        <WinningProposal proposalsState={proposalsState}/>
+      </Row>
+      </>
     )} 
   </Col>
   <Col className="col-sm-3">

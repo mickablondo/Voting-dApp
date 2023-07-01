@@ -1,4 +1,5 @@
 #winning-proposal {
+    margin: 1rem auto;
     flex-direction: row;
     flex-wrap: wrap;
     margin-bottom: 1rem; 
