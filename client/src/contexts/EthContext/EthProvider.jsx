@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback, useEffect } from "react";
+import React, { useReducer, useCallback, useEffect, useRef } from "react";
 import Web3 from "web3";
 import EthContext from "./EthContext";
 import { 
@@ -9,7 +9,8 @@ import {
 
 function EthProvider({ children }) {
   const [web3State, dispatchWeb3State] = useReducer(web3StateReducer, WEB3_INITIAL_STATE);
-  let chainChangedSubscription;
+  const chainChangedSubscriptionRef = useRef(null);
+  const eventsChangedSubscriptionRef = useRef(false);
 
   const init = useCallback(
     async artifact => {
@@ -29,8 +30,8 @@ function EthProvider({ children }) {
             console.log("owner is:"+ owner);
 
             // refresh page network change
-            if (chainChangedSubscription == null) {
-              chainChangedSubscription = web3.currentProvider.on('chainChanged', (networkId) => window.location.reload());
+            if (chainChangedSubscriptionRef.current == null) {
+              chainChangedSubscriptionRef.current = web3.currentProvider.on('chainChanged', (chainId) => window.location.reload());
             }
 
           } else {
@@ -62,22 +63,21 @@ function EthProvider({ children }) {
     tryInit();
   }, [init]);
 
-  let eventChangeSubscription = false;
-
+  
   useEffect(() => {
     const events = ["chainChanged", "accountsChanged"];
     const handleChange = () => {
       init(web3State.artifact);
     };
  
-    if (!eventChangeSubscription) {
-      eventChangeSubscription = true;
+    if (!eventsChangedSubscriptionRef.current) {
+      eventsChangedSubscriptionRef.current = true;
       events.forEach(e => window.ethereum.on(e, handleChange));
     }
     return () => {
-      if (eventChangeSubscription) {
+      if (eventsChangedSubscriptionRef.current) {
         events.forEach(e => window.ethereum.removeListener(e, handleChange));
-        eventChangeSubscription = false;
+        eventsChangedSubscriptionRef.current = false;
       }
     };
   }, [init, web3State.artifact]);

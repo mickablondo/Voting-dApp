@@ -9,7 +9,7 @@ const Head = ( { isVoter, isOwner }) => {
   const connect = async () => {
     if (window.ethereum) {
       try {
-        const tmpAccounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        /*const tmpAccounts =*/ await window.ethereum.request({ method: "eth_requestAccounts" });
         window.location.reload();
       } catch (err) {
         console.log('erreur de connexion')

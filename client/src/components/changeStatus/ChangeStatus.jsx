@@ -1,4 +1,4 @@
-import { Button, Card, CardBody } from 'reactstrap';
+import { Card, CardBody } from 'reactstrap';
 import EnumWorkflowStatus from '../EnumWorkflowStatus';
 import useEth from '../../contexts/EthContext/useEth';
 import { useState, useEffect } from 'react';
@@ -31,10 +31,7 @@ const ChangeStatus = ({ currentStatus }) => {
 
   useEffect(() => {
     if (currentStatus) {
-      console.log("status", currentStatus)
-      console.log("before", cardBodyStepClassNames)
       setCardBodyStepClassNames(initCardBodyStepClassNames(currentStatus));
-      console.log("after", cardBodyStepClassNames)
     }
   }, [currentStatus]) 
 
