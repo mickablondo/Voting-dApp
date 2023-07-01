@@ -3,7 +3,7 @@ import { CardBody, Card, CardTitle, CardImg, CardText, Button } from 'reactstrap
 import useEth from "../../contexts/EthContext/useEth";
 import './WinningProposal.css'
 
-const WinningProposal = ({ proposalsState }) => {
+const WinningProposal = ({ proposalsState, votersHaveVoted }) => {
 
     const { state: { contract, accounts } } = useEth();
     const [winningProposal, setWinningProposal] = useState(null);
@@ -24,7 +24,7 @@ const WinningProposal = ({ proposalsState }) => {
                     }
                 }
                 if (!found) {
-                    setWinningProposal({ if: proposalId, description: 'N/A', voteCount: 'N/A' });    
+                    setWinningProposal({ if: 'N/A', description: 'N/A', voteCount: 'N/A' });    
                 } 
             })
             .catch((error) => {
@@ -44,7 +44,7 @@ const WinningProposal = ({ proposalsState }) => {
               ) : (
                 <>
                   <CardTitle tag="h5"> Id: {winningProposal.id} </CardTitle>
-                  <CardText tag="h5"> Votes: {winningProposal.voteCount} </CardText>
+                  <CardText tag="h5"> Votes: {votersHaveVoted.filter(vote => vote.proposalId === winningProposal.id).length} </CardText>
                   <CardText className="mb-2 text-muted" tag="h6">{winningProposal.description}</CardText>
                 </>
               )}

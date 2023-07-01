@@ -46,17 +46,22 @@ const ListProposal = ({ proposalsState, currentStatus, votersHaveVoted }) => {
         </ListGroupItem>
       ))}
       </ListGroup>
-      { votersHaveVoted.length === 0 || votersHaveVoted.find((voter) => voter === accounts[0]) === undefined ?
-      <Button
-        color="primary"
-        onClick={handleActionButtonClick}
-        className="rounded-circle"
-        disabled={currentStatus !== parseInt(EnumWorkflowStatus.VotingSessionStarted)}
-      >
-          Vote
-      </Button>
-      : <span className="badge bg-success">You have already voted !</span>
-      }
+
+      { accounts && accounts.length > 0 && (
+      <>
+        { votersHaveVoted.length === 0 || votersHaveVoted.find((vote) => vote.voter === accounts[0]) === undefined ?
+        <Button
+          color="primary"
+          onClick={handleActionButtonClick}
+          className="rounded-circle"
+          disabled={currentStatus !== parseInt(EnumWorkflowStatus.VotingSessionStarted)}
+        >
+            Vote
+        </Button>
+        : <span className="badge bg-success">You have already voted !</span>
+        }
+      </>
+      )}
     </Container>
   )
 }

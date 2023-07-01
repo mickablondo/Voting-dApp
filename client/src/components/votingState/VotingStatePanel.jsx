@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { CardBody, CardColumns, Card, CardTitle, CardImg, CardText } from 'reactstrap'
 import './VotingStatePanel.css';
 
-const VotingStates = ({ votersState, proposalsState }) => {
+const VotingStates = ({ votersState, proposalsState, votersHaveVoted }) => {
 
   const [participationState, setParticipationState] = useState({
     rate: 0,  registredCount: 0, participantCount: 0
@@ -16,12 +16,8 @@ const VotingStates = ({ votersState, proposalsState }) => {
         registredCount: votersState.length, 
       };
       // participant? <- registred with a vote
-      if (proposalsState && proposalsState.length > 0) {
-        let totalVotes = 0;
-        for (const p of proposalsState) {
-          totalVotes += p.voteCount;
-        } 
-        newState.participantCount = totalVotes; 
+      if (votersHaveVoted) {
+        newState.participantCount = votersHaveVoted.length; 
       } 
       if (newState.registredCount !== participationState.registredCount
         || newState.participantCount !== participationState.participantCount) {
@@ -30,7 +26,7 @@ const VotingStates = ({ votersState, proposalsState }) => {
       }
     }
      
-  }, [votersState, proposalsState, participationState])
+  }, [votersState, participationState, votersHaveVoted])
 
   return (
     <CardColumns id="voting-state-panel">
