@@ -24,7 +24,7 @@ const Head = ( { isVoter, isOwner }) => {
     <>
       <Navbar className="me-auto" color="light" light>
         <NavbarBrand href="/">
-          <img alt="logo" src="/images/vote-icon.png" className="navbar-icon" />
+          <img alt="logo" src="images/vote-icon.png" className="navbar-icon" />
           Voting
         </NavbarBrand>
         <NavbarText> 
