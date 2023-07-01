@@ -11,6 +11,8 @@ import VoterContainer from "./voter/VoterContainer";
 import ProposalContainer from "./proposal/ProposalContainer";
 import GetVoterContainer from "./voter/GetVoterContainer";
 
+import './index.css'
+
 const Index = () => {
 
   const { state: { artifact, contract, accounts, owner } } = useEth();
