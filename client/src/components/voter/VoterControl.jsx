@@ -30,10 +30,12 @@ const VoterControl = ({votersState, currentStatus}) => {
       return;
     }
 
-    if(currentStatus === parseInt())
     setIsVoteRunningState(true);
     try {
       contract.methods.addVoter(voterInputState).send({from: owner})
+      .then((result) => {
+        setVoterInputState("");
+      })
       .catch((error) => {
         console.log(error);
         alert(error?.message); 
@@ -49,8 +51,8 @@ const VoterControl = ({votersState, currentStatus}) => {
  
   return ( 
     <Form onSubmit={onAddVoterSubmit} >
-      <Row className="row-cols-lg-auto">
-        <Col className="me-auto ">
+      <Row >
+        <Col className="col-sm-9">
           <Label for="voterAddress" className="visually-hidden">Email</Label>
           <Input name="voterAddress" placeholder="0x..." className="voter-address-input" type="text" 
             value={voterInputState}
@@ -58,8 +60,12 @@ const VoterControl = ({votersState, currentStatus}) => {
             disabled={isVoteRunningState || currentStatus !== EnumWorkflowStatus.RegisteringVoters}
           />
         </Col>
-        <Col>
-          <Button disabled={isVoteRunningState || currentStatus !== EnumWorkflowStatus.RegisteringVoters}>Add voter</Button>
+        <Col className='col-sm-3'>
+          <Button disabled={isVoteRunningState || currentStatus !== EnumWorkflowStatus.RegisteringVoters}
+          style={{width: '100%'}}
+          >
+            Add voter
+          </Button>
         </Col>
       </Row> 
     </Form>

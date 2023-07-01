@@ -3,6 +3,11 @@
     padding: 1rem;
 }
 
+#voter-container row col button {
+    width: 100%;
+}
+
 .voter-list {
     margin: 1rem 0 1rem 0;
 }
+
