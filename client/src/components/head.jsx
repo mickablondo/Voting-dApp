@@ -3,9 +3,9 @@ import { Navbar, NavbarBrand, NavbarText, Button } from 'reactstrap';
 import './head.css';
 
 const Head = ( { isVoter, isOwner }) => {
-
+   
   const { state: { accounts} } = useEth();
-
+  
   const connect = async () => {
     if (window.ethereum) {
       try {
@@ -35,7 +35,7 @@ const Head = ( { isVoter, isOwner }) => {
                 [ {isOwner && ("Owner") }{isOwner && isVoter?", ":" "}{isVoter && ("Voter") } ]
               </span>
               <span>
-              {accounts[0]}
+              {accounts && (accounts[0])}
               </span>
             </>
             ) : ( 
@@ -45,7 +45,7 @@ const Head = ( { isVoter, isOwner }) => {
                   Visitor
                 </span>
                 <span>
-                  {accounts[0]}
+                {accounts && (accounts[0])}
                 </span>
                 </>
               ) : (

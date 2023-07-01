@@ -15,6 +15,9 @@ import './index.css'
 import { EnumWorkflowStatus } from "./EnumWorkflowStatus";
 import WinningProposal from './winningProposal/WinningProposal';
 
+const INIT_SUBSCRIBTION_REF = { voterRegistred: null, proposalRegistred: null, 
+  workflowChanged: null, voted: null };
+
 const Index = () => {
 
   const { state: { artifact, contract, accounts, owner } } = useEth();
@@ -24,8 +27,8 @@ const Index = () => {
   const [votersHaveVoted, setVotersHaveVoted] = useState([]);
   const [proposalsState, setProposalsState] = useState([]);
   const [currentStatus, setCurrentStatus] = useState(0);
-   
-  const subscriptionsRef = useRef({ voterRegistred: null, proposalRegistred: null, workflowChanged: null });
+  
+  const subscriptionsRef = useRef(INIT_SUBSCRIBTION_REF);
 
   // Définition d'une proposal
   class Proposal {
@@ -53,7 +56,8 @@ const Index = () => {
     const proposal = await contract.methods.getOneProposal(proposalId).call({ from: accounts[0]});
 
     setProposalsState(proposalsState => {
-      if (!proposalsState.includes(proposalId)) {
+      if (proposalsState.filter(p => p.id === proposalId).length === 0) {
+      //if (!proposalsState.includes(proposalId)) {
         console.log("new proposal added: "+ proposalId);
         return [...proposalsState,
           new Proposal(proposalId, proposal.description, parseInt(proposal.voteCount))]
@@ -64,16 +68,29 @@ const Index = () => {
     });
   };
   
-  // reset states/data related to account
+  // reset states/data related to current account
   useEffect(() => {
-    if (accounts) {
-      setIsOwnerState(false);
-      setIsVoterState(false);
-      setVotersState([]);
-      setProposalsState([]);
+    if (accounts === null) {
+      console.log ("index - account state reset")
+      if (isOwnerState)
+        setIsOwnerState(false);
+      if (isVoterState)
+        setIsVoterState(false);
+      // avoiding to many update if possible
+      // setVotersState([]);
+      // setProposalsState([]);
+    } else {
+      if (owner && !isOwnerState && owner === accounts[0]) {
+        console.log("setIsOwnerState true")
+        setIsOwnerState(true);
+      }
+      if (votersState !== null && !isVoterState && votersState.filter((addr) => addr === accounts[0]).length > 0) {
+        console.log("setIsVoterState true")
+        setIsVoterState(true);
+      }
     }
-  }, [accounts])
-  
+  }, [accounts, owner, votersState])
+
   // Gestion des droits du compte connecté et appel aux différents éléments du Smart Contract
   useEffect(() => { 
     if (contract && accounts && accounts.length > 0) {
@@ -83,71 +100,80 @@ const Index = () => {
 
       // recherche des voters dans les évènements
       let options = {filter: {value: [],},fromBlock: 0};
-      if (subscriptionsRef.current.voterRegistred == null) {
-        const subscription = contract.events.VoterRegistered(options)
-            .on('data', event => {
-              addVoter(event.returnValues.voterAddress);
-              if(event.returnValues.voterAddress === accounts[0]) { 
-                setIsVoterState(true);
-              }  
-            })
-            .on('changed', changed => console.log(changed))
-            .on('error', err => console.log(err))
-            .on('connected', str => console.log(str));
+      if (subscriptionsRef.current.voterRegistred === null) {
+        console.log("add subscriptions.VoterRegistered")
+        const subscription = contract.events.VoterRegistered(options, (error, event) => {
+          if (event) {
+            addVoter(event.returnValues.voterAddress);
+            if(event.returnValues.voterAddress === accounts[0]) { 
+              setIsVoterState(true);
+            } 
+          } else {
+            console.log("VoterRegistered error", error);
+          }
+        });
         subscriptionsRef.current = {...subscriptionsRef.current, voterRegistred: subscription};
       }
       
       // recherche des proposals dans les évènements
-      if (subscriptionsRef.current.proposalRegistred == null) {
-        const subscription = contract.events.ProposalRegistered(options)
-            .on('data', event => {
-              try {
-                addProposal(parseInt(event.returnValues.proposalId));
-              } catch (err) {
-                console.error(err);
-              }
-            })
-            .on('changed', changed => console.log(changed))
-            .on('error', err => console.log(err))
-            .on('connected', str => console.log(str));
+      if (subscriptionsRef.current.proposalRegistred === null) {
+        console.log("add subscriptions.ProposalRegistered")
+        const subscription = contract.events.ProposalRegistered(options, (error, event) => {
+          if (event) { 
+            try {
+              addProposal(parseInt(event.returnValues.proposalId));
+            } catch (err) {
+              console.log("ProposalRegistered event error", err);
+            }
+          } else {
+            console.log("ProposalRegistered error", error);
+          }
+        });
         subscriptionsRef.current = {...subscriptionsRef.current, proposalRegistred: subscription};
       }
 
       // Récupération du statut en cours dans le workflow
-      if (subscriptionsRef.current.workflowChanged == null) {
-        console.log("listening on WorkflowStatusChange")
-        const subscription = contract.events.WorkflowStatusChange(options)
-          .on('data', event => {
+      if (subscriptionsRef.current.workflowChanged === null) {
+        console.log("add subscriptions.WorkflowStatusChange")
+        const subscription = contract.events.WorkflowStatusChange(options, (error, event) => {
+          if (event) { 
             try {
               setCurrentStatus(parseInt(event.returnValues.newStatus));
             } catch (err) {
-              console.error(err);
+              console.log("WorkflowStatusChange event error", err);
             }
-          })
-          .on('changed', changed => console.log(changed))
-          .on('error', err => console.log(err))
-          .on('connected', str => console.log(str));
+          } else {
+            console.log("WorkflowStatusChange error", error);
+          }
+        });
         subscriptionsRef.current = {...subscriptionsRef.current, workflowChanged: subscription};
       }
 
-      contract.events.Voted(options)
-          .on('data', event => {
+      if (subscriptionsRef.current.voted === null) {
+        console.log("add subscriptions.Voted")
+        const subscription = contract.events.Voted(options, (error, event) => {
+          console.log("voted received", event, error)
+          if (event) { 
             try {
               setVotersHaveVoted(voters => [...voters, event.returnValues.voter]);
             } catch (err) {
-              console.error(err);
+              console.log("Voted event error", err);
             }
-          })
-          .on('changed', changed => console.log(changed))
-          .on('error', err => console.log(err))
-          .on('connected', str => console.log(str));
+          } else {
+            console.log("Voted error", error);
+          }
+        });
+        subscriptionsRef.current = {...subscriptionsRef.current, voted: subscription};
+      }
     }//! contract
 
     return () => {
       const subscriptions = subscriptionsRef.current;
       for (const name in subscriptions) {
         if (subscriptions[name] != null) {
+          console.log("clear subscriptions."+ name)
           subscriptions[name].unsubscribe();
+          subscriptionsRef.current = INIT_SUBSCRIBTION_REF;
         }
       }
     };
