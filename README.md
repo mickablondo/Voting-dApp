@@ -1,40 +1,16 @@
 # Alyra-project-3
 
+The third project from the Alyra formation is to create a voting DApp (Decentralized application).  
+This project was developed by [Adrien Launay](https://github.com/alowoa) & [Mickaël Blondeau](https://github.com/mickablondo).
+
 ## Démo
 Lien vidéo :  
 Lien de la dApp sur un déploiement public :  
 Adresse de déploiement sur Goerli :  
 
-## Conception <i>(à garder ?)</i>
-[Balsamiq](https://balsamiq.com/)
-![Alt text](conception.png)
+## Frontend
 
-## Commandes passées <i>(à revoir)</i>
-```bash
-truffle unbox react
-cd client
-npm i bootstrap@5.3.0 reactstrap
-cd truffle
-npm i @openzeppelin/contracts
-```
 
-Pour tester :  
-```bash
-ganache -m '...'
-cd truffle
-truffle migrate
-cd ../client
-npm start
-```
-
-Pour aller plus loin, deux scripts sont disponibles pour :  
- - récupérer le statut en cours ;
- - enregistrer des <i>voters</i> par défaut pour faciliter les tests en local ;
-```bash
-truffle migrate
-truffle exec scripts/get_voting_status.js
-truffle exec scripts/register_voters.js
-```
 
 ## Backend
 
@@ -70,6 +46,17 @@ Compile and migrate on a local node (ganache):
 
 ```sh
 $ npm run migrate:local
+```
+
+### Scripts
+
+Two scripts created to facilitate testing :  
+ - scripts/get_voting_status.js : getting the current status ;
+ - scripts/register_voters.js : registering 2 voters ;
+
+```sh
+$ truffle exec scripts/get_voting_status.js
+$ truffle exec scripts/register_voters.js
 ```
 
 ## Optimizations from the original Voting contract
