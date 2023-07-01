@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { CardBody, CardColumns, Card, CardTitle, CardImg, CardText, Button } from 'reactstrap'
-import { EnumWorkflowStatus } from '../EnumWorkflowStatus';
-import useEth from "../../contexts/EthContext/useEth";
+import { CardBody, CardColumns, Card, CardTitle, CardImg, CardText } from 'reactstrap'
 import './VotingStatePanel.css';
 
-const VotingStates = ({ votersState, proposalsState, currentStatus }) => {
+const VotingStates = ({ votersState, proposalsState }) => {
 
-  const { state: { contract, accounts } } = useEth();
-  const [winningProposal, setWinningProposal] = useState(null);
-  const [loadingProposal, setLoadingProposal] = useState(false);
   const [participationState, setParticipationState] = useState({
     rate: 0,  registredCount: 0, participantCount: 0
   });
@@ -36,33 +31,6 @@ const VotingStates = ({ votersState, proposalsState, currentStatus }) => {
     }
      
   }, [votersState, proposalsState, participationState])
-  
-
-  const getWinningProposal = () => {
-    setLoadingProposal(true);
-    contract.methods.winningProposalID().call({ from: accounts[0] })
-      .then((proposalId) => {
-        proposalId = parseInt(proposalId)
-        console.log("winningProposal = "+ proposalId);
-        let found = false;
-        // console.log("proposalStates", proposalsState)
-        for (const proposal of proposalsState) {
-          if (proposal.id === proposalId) {
-            console.log("winningProposal found", proposal)
-            setWinningProposal(proposal);
-            found = true;
-          }
-        }
-        if (!found) {
-          setWinningProposal({ if: proposalId, description: 'N/A', voteCount: 'N/A' });    
-        } 
-      })
-      .catch((error) => {
-        console.log("error", error);
-        alert(error?.message);
-      })
-      .finally(() => setLoadingProposal(false))
-  };
 
   return (
     <CardColumns id="voting-state-panel">
@@ -92,28 +60,6 @@ const VotingStates = ({ votersState, proposalsState, currentStatus }) => {
         <CardBody>
           <CardTitle tag="h5"> {proposalsState.length} </CardTitle>
           <CardText className="mb-2 text-muted" tag="h6"> Proposals </CardText>
-        </CardBody>
-      </Card>
-
-      <Card>
-        <CardImg alt="Trophy image" src="/images/voting-state-panel/trophy-icon-96.png" />
-        <CardBody>
-          {currentStatus === EnumWorkflowStatus.VotesTallied ? (
-            <>
-              {winningProposal === null ? (
-                <Button onClick={getWinningProposal} disabled={loadingProposal}>Winning proposal?</Button>
-              ) : (
-                <>
-                  <CardTitle tag="h5"> Id: {winningProposal.id} </CardTitle>
-                  <CardText tag="h5"> Votes: {winningProposal.voteCount} </CardText>
-                  <CardText className="mb-2 text-muted" tag="h6">{winningProposal.description}</CardText>
-                </>
-              )}
-            </>
-          ) : (
-            <CardText className="text-muted" > Votes not tallied yet </CardText>
-          )}
-
         </CardBody>
       </Card>
 

@@ -29,8 +29,6 @@ const GetVoterControl = () => {
 
         try {
             const voter = await contract.methods.getVoter(getVoterInputState).call({from: accounts[0]});
-            
-            console.log(voter)
             setVoterInfo(voter);
         } catch (error) {
             console.log(error)
