@@ -2,6 +2,8 @@ import { ListGroup, ListGroupItem, Button, Container } from 'reactstrap';
 import { EnumWorkflowStatus } from '../EnumWorkflowStatus';
 import useEth from "../../contexts/EthContext/useEth";
 import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { toasterOptionsWithSuccess } from '../toasterConfig'
 
 const ListProposal = ({ proposalsState, currentStatus, votersHaveVoted }) => {
 
@@ -16,7 +18,15 @@ const ListProposal = ({ proposalsState, currentStatus, votersHaveVoted }) => {
   const handleActionButtonClick = () => {
     if (selectedProposal) {
       try {
-        contract.methods.setVote(selectedProposal).send({from: accounts[0]});
+        const promise = contract.methods.setVote(selectedProposal).send({from: accounts[0]});
+
+        toast.promise(promise, {
+          loading: 'Loading',
+          success: () => "Vote counted!",
+          error: (err) => `This just happened: ${err?.toString()}`,
+        },
+        toasterOptionsWithSuccess);
+
       } catch (err) {
         console.error(err);
       }
