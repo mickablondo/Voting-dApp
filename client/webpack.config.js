@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const EslintWebpackPlugin = require("eslint-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 const extensions = [".js", ".jsx"];
 
@@ -42,6 +43,11 @@ module.exports = {
       template: "./public/index.html",
       favicon: "./public/favicon.ico",
     }),
+    new CopyPlugin({
+      patterns: [
+        { from: "./public/images", to: "./images" },
+      ],
+    })
   ],
   stats: "minimal",
 };
