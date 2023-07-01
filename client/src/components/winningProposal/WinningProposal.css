@@ -1,0 +1,17 @@
+.card {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 1rem; 
+    min-height: 8rem;
+}
+
+.card img {
+    max-height: 6rem;
+    min-width: 5rem;
+    width: auto;
+    margin: auto auto auto 1rem;
+}
+
+.card-body {
+    text-align: right;
+}

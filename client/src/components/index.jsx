@@ -12,6 +12,8 @@ import ProposalContainer from "./proposal/ProposalContainer";
 import GetVoterContainer from "./voter/GetVoterContainer";
 import { Toaster } from 'react-hot-toast';
 import './index.css'
+import { EnumWorkflowStatus } from "./EnumWorkflowStatus";
+import WinningProposal from './winningProposal/WinningProposal';
 
 const Index = () => {
 
@@ -157,21 +159,27 @@ const Index = () => {
     {isOwnerState && (
       <Row>
         <ChangeStatus currentStatus={currentStatus}/>
-        <VoterContainer votersState={votersState} isOwnerState={isOwnerState} currentStatus={currentStatus}/>
+        { currentStatus === EnumWorkflowStatus.VotesTallied ?
+          <WinningProposal proposalsState={proposalsState}/>
+          : <VoterContainer votersState={votersState} isOwnerState={isOwnerState} currentStatus={currentStatus}/>
+        }
       </Row>
     )}
     {isVoterState && (
       <>
       <Row>
         <GetVoterContainer /> 
-        <ProposalContainer proposalsState={proposalsState} currentStatus={currentStatus} votersHaveVoted={votersHaveVoted}/>
+        { currentStatus === EnumWorkflowStatus.VotesTallied ?
+          <WinningProposal proposalsState={proposalsState}/>
+          : <ProposalContainer proposalsState={proposalsState} currentStatus={currentStatus} votersHaveVoted={votersHaveVoted}/>
+        }
       </Row>
       </>
     )} 
   </Col>
   <Col className="col-sm-3">
     <Row>
-      <VotingStates votersState={votersState} proposalsState={proposalsState} currentStatus={currentStatus}/>
+      <VotingStates votersState={votersState} proposalsState={proposalsState}/>
     </Row>
   </Col>
 </Row>;

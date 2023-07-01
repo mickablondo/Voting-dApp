@@ -29,8 +29,6 @@ const GetVoterControl = () => {
 
         try {
             const voter = await contract.methods.getVoter(getVoterInputState).call({from: accounts[0]});
-            
-            console.log(voter)
             setVoterInfo(voter);
         } catch (error) {
             console.log(error)
@@ -54,13 +52,14 @@ const GetVoterControl = () => {
         </Row> 
         </Form>
 
-        { voterInfo ?
+        { voterInfo ? 
             voterInfo.isRegistered ?
                 voterInfo.hasVoted ?
-                    <span className="badge rounded-pill bg-info text-dark">The voter has voted for proposal : {voterInfo.votedProposalId}</span>
-                : <span className="badge rounded-pill bg-warning text-dark">The voter has not voted yet.</span>
-            : <span className="badge rounded-pill bg-danger">It's not a voter !</span>
-        : <span></span>}
+                <Row><Col className="me-auto"><span className="badge rounded-pill bg-info text-dark">The voter has voted for proposal : {voterInfo.votedProposalId}</span></Col></Row>
+                : <Row><Col className="me-auto"><span className="badge rounded-pill bg-warning text-dark">The voter has not voted yet.</span></Col></Row>
+            : <Row><Col className="me-auto"><span className="badge rounded-pill bg-danger">It's not a voter !</span></Col></Row>
+        : <span></span>
+        }
     </>
     )
 }
