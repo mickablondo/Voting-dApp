@@ -2,13 +2,15 @@ import { useState } from 'react';
 import useEth from "../../contexts/EthContext/useEth";
 import EnumWorkflowStatus from '../EnumWorkflowStatus';
 import { Form, Row, Col, Label, Input, Button } from 'reactstrap';
+import toast from 'react-hot-toast';
+import { toasterDefaultOptions, toasterOptionsWithSuccess } from '../toasterConfig'
 
 const VoterControl = ({votersState, currentStatus}) => {
   
   const [voterInputState, setVoterInputState] = useState("");
   const [isVoteRunningState, setIsVoteRunningState] = useState(false);
-  const { state: {  contract, owner } } = useEth();
-  
+  const { state: {  contract, owner } } = useEth();  
+
   const onVoterInputChange = (value) => {
     setVoterInputState(value);
   };
@@ -21,26 +23,29 @@ const VoterControl = ({votersState, currentStatus}) => {
     // prevent default submit form action
     e.preventDefault(); 
 
-    if (!isEthAddressFormat(voterInputState)) {
-      alert(`Not an ethereum address:"${voterInputState}"`);
+    if (!isEthAddressFormat(voterInputState)) { 
+      toast.error(`Not an ethereum address:"${voterInputState}"!`, toasterDefaultOptions);
       return;
     }
     if (votersState.includes(voterInputState)) {
-      alert(`Already registred voter: "${voterInputState}"`);
+      toast.error(`Voter ${voterInputState} already registred!`, toasterDefaultOptions);
       return;
     }
 
     setIsVoteRunningState(true);
-    try {
-      contract.methods.addVoter(voterInputState).send({from: owner})
-      .then((result) => {
-        setVoterInputState("");
-      })
-      .catch((error) => {
-        console.log(error);
-        alert(error?.message); 
-      })
+    try { 
+      const addVoterPromise = contract.methods.addVoter(voterInputState).send({from: owner})
+      .then(() => setVoterInputState(""))
+      .catch((error) => console.log(error))
       .finally(() => setIsVoteRunningState(false)) 
+
+      toast.promise(addVoterPromise, {
+        loading: 'Loading',
+        success: () => `Voter added ${voterInputState}!`,
+        error: (err) => `This just happened: ${err?.toString()}`,
+      },
+      toasterOptionsWithSuccess);
+
     } catch (error) {
       alert(`Could not addVoter:"${error}"`);
       console.log(error);
