@@ -35,7 +35,7 @@ const WinningProposal = ({ proposalsState }) => {
     };
 
   return (
-    <Card>
+    <Card id="winning-proposal">
         <CardImg alt="Trophy image" src="/images/voting-state-panel/trophy-icon-96.png" />
         <CardBody>
             <>
@@ -50,7 +50,7 @@ const WinningProposal = ({ proposalsState }) => {
               )}
             </>
         </CardBody>
-      </Card>
+    </Card>
   )
 }
 
