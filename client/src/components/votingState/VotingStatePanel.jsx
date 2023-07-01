@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { CardBody, CardColumns, Card, CardTitle, CardImg, CardText, Button } from 'reactstrap'
-import EnumWorkflowStatus from '../EnumWorkflowStatus';
+import { EnumWorkflowStatus } from '../EnumWorkflowStatus';
 import useEth from "../../contexts/EthContext/useEth";
 import './VotingStatePanel.css';
 

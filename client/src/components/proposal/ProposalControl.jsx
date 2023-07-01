@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import useEth from "../../contexts/EthContext/useEth";
 import { Form, Row, Col, Input, Button } from 'reactstrap';
-import EnumWorkflowStatus from '../EnumWorkflowStatus';
+import { EnumWorkflowStatus } from '../EnumWorkflowStatus';
 
 const AddProposal = ({ currentStatus }) => {
 

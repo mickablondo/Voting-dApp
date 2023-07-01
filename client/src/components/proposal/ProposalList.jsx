@@ -1,5 +1,5 @@
 import { ListGroup, ListGroupItem, Button, Container } from 'reactstrap';
-import EnumWorkflowStatus from '../EnumWorkflowStatus';
+import { EnumWorkflowStatus } from '../EnumWorkflowStatus';
 import useEth from "../../contexts/EthContext/useEth";
 import { useState } from 'react';
 

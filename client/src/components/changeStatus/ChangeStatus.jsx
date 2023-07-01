@@ -1,8 +1,9 @@
 import { Card, CardBody } from 'reactstrap';
-import EnumWorkflowStatus from '../EnumWorkflowStatus';
+import { EnumWorkflowStatus, EnumWorkflowStatusValues} from '../EnumWorkflowStatus';
 import useEth from '../../contexts/EthContext/useEth';
 import { useState, useEffect } from 'react';
-
+import toast from 'react-hot-toast';
+import { toasterOptionsWithSuccess } from '../toasterConfig'
 import './ChangeStatus.css'
  
 
@@ -22,12 +23,10 @@ const initCardBodyStepClassNames = (currentStatusValue) => {
   return state;
 };
 
-
 const ChangeStatus = ({ currentStatus }) => {
 
   const { state: { contract, accounts } } = useEth();
   const [cardBodyStepClassNames, setCardBodyStepClassNames] = useState(initCardBodyStepClassNames(currentStatus))
-
 
   useEffect(() => {
     if (currentStatus) {
@@ -37,27 +36,32 @@ const ChangeStatus = ({ currentStatus }) => {
 
   const handleStepClick = (step) => {
     if (step === currentStatus + 1) {
+      let promise = null; 
       switch (step) {
         case EnumWorkflowStatus.ProposalsRegistrationStarted:
-          contract.methods.startProposalsRegistering().send({ from: accounts[0] });
+          promise = contract.methods.startProposalsRegistering().send({ from: accounts[0] });
           break;
-
         case EnumWorkflowStatus.ProposalsRegistrationEnded:
-          contract.methods.endProposalsRegistering().send({ from: accounts[0] });
+          promise = contract.methods.endProposalsRegistering().send({ from: accounts[0] });
           break;
-
         case EnumWorkflowStatus.VotingSessionStarted:
-          contract.methods.startVotingSession().send({ from: accounts[0] });
+          promise = contract.methods.startVotingSession().send({ from: accounts[0] });
           break;
-
         case EnumWorkflowStatus.VotingSessionEnded:
-          contract.methods.endVotingSession().send({ from: accounts[0] });
+          promise = contract.methods.endVotingSession().send({ from: accounts[0] });
           break;
-
         case EnumWorkflowStatus.VotesTallied:
-          contract.methods.tallyVotes().send({ from: accounts[0] });
+          promise= contract.methods.tallyVotes().send({ from: accounts[0] });
           break;
         default:
+      }
+      if (promise != null) {
+        toast.promise(promise, {
+          loading: 'Loading',
+          success: () => `Workflow status changed to ${EnumWorkflowStatusValues[step]}!`,
+          error: (err) => `This just happened: ${err?.toString()}`,
+        },
+        toasterOptionsWithSuccess);
       }
     }
   }; 

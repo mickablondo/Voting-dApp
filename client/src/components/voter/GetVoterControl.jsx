@@ -1,6 +1,8 @@
 import { Form, Row, Col, Input, Button } from 'reactstrap';
 import useEth from "../../contexts/EthContext/useEth";
 import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { toasterDefaultOptions } from '../toasterConfig'
 
 const GetVoterControl = () => {
 
@@ -21,12 +23,13 @@ const GetVoterControl = () => {
         e.preventDefault(); 
     
         if (!isEthAddressFormat(getVoterInputState)) {
-          alert(`Not an ethereum address:"${getVoterInputState}"`);
-          return;
+            toast.error(`Not an ethereum address:"${getVoterInputState}"!`, toasterDefaultOptions);
+            return;
         }
 
         try {
             const voter = await contract.methods.getVoter(getVoterInputState).call({from: accounts[0]});
+            
             console.log(voter)
             setVoterInfo(voter);
         } catch (error) {

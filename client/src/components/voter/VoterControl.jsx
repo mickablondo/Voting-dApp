@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useEth from "../../contexts/EthContext/useEth";
-import EnumWorkflowStatus from '../EnumWorkflowStatus';
+import { EnumWorkflowStatus } from '../EnumWorkflowStatus';
 import { Form, Row, Col, Label, Input, Button } from 'reactstrap';
 import toast from 'react-hot-toast';
 import { toasterDefaultOptions, toasterOptionsWithSuccess } from '../toasterConfig'

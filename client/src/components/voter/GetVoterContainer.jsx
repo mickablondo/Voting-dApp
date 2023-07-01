@@ -1,5 +1,4 @@
 import { Card, CardTitle } from "reactstrap";
-import VoterControl from "./VoterControl";
 import './VoterContainer.css'
 import GetVoterControl from "./GetVoterControl";
 

@@ -1,7 +1,7 @@
 import { Card, CardTitle } from "reactstrap";
 import AddProposal from "./ProposalControl";
 import ListProposal from "./ProposalList";
-import EnumWorkflowStatus from "../EnumWorkflowStatus";
+import { EnumWorkflowStatus } from "../EnumWorkflowStatus";
 
 import './ProposalContainer.css'
 import StateIcon from "../stateIcon/StateIcon";
