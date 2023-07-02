@@ -3,9 +3,9 @@
 The third project from the Alyra formation is to create a voting DApp (Decentralized application).  
 This project was developed by [Adrien Launay](https://github.com/alowoa) & [Mickaël Blondeau](https://github.com/mickablondo).
 
-## Démo
-Lien vidéo : <i>TODO</i>  
-Lien de la dApp sur un déploiement public : <i>TODO</i>  
+## Demo
+Video : <i>TODO</i>  
+DApp on [Vercel](https://vercel.com/) : https://alyra-project3-blush.vercel.app/  
 Voting contract deployed on Goerli in : 0x3c53259ED1ba5490c0380De4f8c66e583E515c89  
 
 ## Backend
