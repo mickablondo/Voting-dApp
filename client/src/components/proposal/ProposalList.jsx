@@ -1,7 +1,7 @@
 import { ListGroup, ListGroupItem, Button, Container } from 'reactstrap';
 import { EnumWorkflowStatus } from '../EnumWorkflowStatus';
 import useEth from "../../contexts/EthContext/useEth";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { toasterOptionsWithSuccess } from '../toasterConfig'
 
@@ -9,6 +9,7 @@ const ListProposal = ({ proposalsState, currentStatus, votersHaveVoted }) => {
 
   const { state: { contract, accounts } } = useEth();
   const [selectedProposal, setSelectedProposal] = useState(null);
+  const [proposals, setProposals] = useState([]);
 
   const handleProposalClick = (proposalId) => {
     setSelectedProposal(proposalId);
@@ -33,10 +34,20 @@ const ListProposal = ({ proposalsState, currentStatus, votersHaveVoted }) => {
     }
   };
 
+  useEffect(() => {
+    async function getProposalsDetails() {
+      for(const proposalState of proposalsState) {
+        const proposalFromContract = await contract.methods.getOneProposal(proposalState).call({ from: accounts[0]});
+        setProposals(oldProposals => [...oldProposals, {id: proposalState, description: proposalFromContract.description}]);
+      }
+    }
+    getProposalsDetails();
+  }, [proposalsState]);
+
   return (
     <Container>
       <ListGroup className='proposal-list'>
-      { proposalsState.map(proposal => (
+      { proposals.map(proposal => (
         <ListGroupItem
           key={proposal.id}
           active={selectedProposal === proposal.id}

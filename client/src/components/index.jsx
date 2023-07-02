@@ -29,15 +29,6 @@ const Index = () => {
   const [currentStatus, setCurrentStatus] = useState(0);
   
   const subscriptionsRef = useRef(INIT_SUBSCRIBTION_REF);
-
-  // Définition d'une proposal
-  class Proposal {
-    constructor(id, description, voteCount) {
-      this.id = id;
-      this.description = description;
-      this.voteCount = voteCount;
-    }
-  }
  
   const addVoter = (voterAddress) => {
     setVotersState(votersState => {
@@ -53,14 +44,11 @@ const Index = () => {
 
   const addProposal = async (proposalId) => {
     console.log("adding a proposalState: "+ proposalId);
-    const proposal = await contract.methods.getOneProposal(proposalId).call({ from: accounts[0]});
 
     setProposalsState(proposalsState => {
-      if (proposalsState.filter(p => p.id === proposalId).length === 0) {
-      //if (!proposalsState.includes(proposalId)) {
+      if (proposalsState.filter(p => p === proposalId).length === 0) {
         console.log("new proposal added: "+ proposalId);
-        return [...proposalsState,
-          new Proposal(proposalId, proposal.description, parseInt(proposal.voteCount))]
+        return [...proposalsState, proposalId]
       } else {
         console.log("Already exists! Could not add proposal: "+ proposalId);
       }
