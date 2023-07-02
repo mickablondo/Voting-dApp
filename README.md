@@ -4,13 +4,9 @@ The third project from the Alyra formation is to create a voting DApp (Decentral
 This project was developed by [Adrien Launay](https://github.com/alowoa) & [Mickaël Blondeau](https://github.com/mickablondo).
 
 ## Démo
-Lien vidéo :  
-Lien de la dApp sur un déploiement public :  
+Lien vidéo : <i>TODO</i>  
+Lien de la dApp sur un déploiement public : <i>TODO</i>  
 Voting contract deployed on Goerli in : 0x3c53259ED1ba5490c0380De4f8c66e583E515c89  
-
-## Frontend
-
-
 
 ## Backend
 
@@ -57,6 +53,14 @@ Two scripts created to facilitate testing :
 ```sh
 $ truffle exec scripts/get_voting_status.js
 $ truffle exec scripts/register_voters.js
+```
+
+## Frontend
+
+```sh
+$ cd client
+$ npm install
+$ npm start
 ```
 
 ## Optimizations from the original Voting contract
