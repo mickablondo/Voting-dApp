@@ -8,7 +8,7 @@ Video : https://www.loom.com/share/e3147f1fad8c41a9b5a2f92f3861013f
 DApp on [Vercel](https://vercel.com/) : https://alyra-project3-blush.vercel.app/  
 Voting contract deployed on Goerli in : 0x3c53259ED1ba5490c0380De4f8c66e583E515c89  
 
-## Backend
+## Requirements
 
 This project uses [node](http://nodejs.org) and [npm](https://npmjs.com). Go check them out if you don't have them locally installed.
 
@@ -16,9 +16,11 @@ It's built from the [React Truffle Box](https://trufflesuite.com/boxes/react/).
 
 Recommended versions:
 
-* node: >= v18.16.0
-* npm: >= v9.7.1
+* node: >= v18.16.0  
+* npm: >= v9.7.1  
 * ganache: >= 9.7.1
+
+## Backend
 
 ### Install
 
@@ -46,16 +48,20 @@ $ npm run migrate:local
 
 ### Scripts
 
-Two scripts created to facilitate testing :  
- - scripts/get_voting_status.js : getting the current status ;
- - scripts/register_voters.js : registering 2 voters ;
+Three scripts created to facilitate testing :  
+* scripts/get_voting_status.js : getting the current status ;
+* scripts/register_voters.js : registering 2 voters ;
+* scripts/show_accounts.js : show the accounts creatd by ganache ;
 
 ```sh
-$ truffle exec scripts/get_voting_status.js
-$ truffle exec scripts/register_voters.js
+$ npm run script:get_voting_status
+$ npm run script:register_voters
+$ npm run script:show_accounts
 ```
 
 ## Frontend
+
+To run the frontend :  
 
 ```sh
 $ cd client
