@@ -107,3 +107,7 @@ Optimization V3: (V1, V2) + increment '++var' instead of 'var++'
 ### Errors
 
 *revert* could be used with *custom errors* instead of *require* and strings.     
+
+### Fallback function
+
+Default fallback function should be implemented in order to avoid an unwanted payment.
