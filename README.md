@@ -93,9 +93,9 @@ Direct struct initialization instead of memory variable:
 
 ### setVote
 
-Optimization V1: using a storage variable for voter
-Optimization V2: (V1) + using a storage variable for proposal
-Optimization V3: (V1, V2) + increment '++var' instead of 'var++'
+Optimization V1: using a storage variable for voter  
+Optimization V2: (V1) + using a storage variable for proposal  
+Optimization V3: (V1, V2) + increment '++var' instead of 'var++'  
 
 | Cost              | Initial Cost | Optimization V1 | Optimization V2 | Optimization V3 |
 | ------------------| ------------:| ---------------:| ---------------:| ---------------:|
