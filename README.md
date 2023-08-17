@@ -1,4 +1,4 @@
-# Alyra-project-3
+# Voting-dApp
 
 The third project from the Alyra formation is to create a voting DApp (Decentralized application).  
 This project was developed by [Adrien Launay](https://github.com/alowoa) & [Mickaël Blondeau](https://github.com/mickablondo).
@@ -111,3 +111,12 @@ Optimization V3: (V1, V2) + increment '++var' instead of 'var++'
 ### Fallback function
 
 Default fallback function should be implemented in order to avoid an unwanted payment.
+
+## Screenshots
+
+![image](https://github.com/mickablondo/Voting-dApp/assets/36310658/b9a2654d-b52f-4e39-84c5-bb7e8955d5df)  
+![image](https://github.com/mickablondo/Voting-dApp/assets/36310658/64a14532-dee1-40b8-b8fd-5dfba4f47236)  
+![image](https://github.com/mickablondo/Voting-dApp/assets/36310658/07d0453e-70bc-4dfe-91aa-82b2a37bd719)
+
+
+
